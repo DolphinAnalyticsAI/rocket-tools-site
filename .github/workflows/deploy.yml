@@ -1,0 +1,76 @@
+# 🔸 BEGIN WORKFLOW: deploy.yml
+name: Deploy Rocket Tools
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install CLI tooling
+        run: |
+          npm install --global tailwindcss@latest hugo-extended netlify-cli
+
+      - name: Install Python deps
+        run: pip install pyyaml
+
+      - name: Compile Tailwind
+        working-directory: site
+        run: npx tailwindcss -i ./assets/css/input.css -o ./static/assets/css/output.css --minify
+
+      - name: Ensure no Tailwind config files
+        run: |
+          if ls tailwind.config.* site/tailwind.config.* 2>/dev/null; then echo "tailwind.config.* should not exist" && exit 1; fi
+          if ls postcss.config.* site/postcss.config.* 2>/dev/null; then echo "postcss.config.* should not exist" && exit 1; fi
+
+      - name: Verify Tailwind version
+        run: tailwindcss --version
+
+      - name: Build Hugo site
+        run: hugo --minify --gc --source site
+
+      - name: Netlify deploy
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          SITE_BASE_URL: ${{ secrets.SITE_BASE_URL }}
+        run: netlify deploy --dir=site/public --prod
+
+      - name: Append changelog
+        run: |
+          echo "## Build $(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> docs/changelog.md
+          echo "- Commit: $GITHUB_SHA" >> docs/changelog.md
+          echo "- Deployed: ${{ secrets.SITE_BASE_URL }}" >> docs/changelog.md
+          echo "- Tailwind: $(tailwindcss --version)" >> docs/changelog.md
+          echo "- Hugo: $(hugo version)" >> docs/changelog.md
+
+      - name: Update build manifest
+        run: |
+          python - <<'PY'
+import json, os, time, yaml
+manifest_path = "docs/build-manifest.yaml"
+if not os.path.exists(manifest_path):
+    raise SystemExit("build-manifest.yaml missing")
+with open(manifest_path, "r", encoding="utf-8") as f:
+    data = yaml.safe_load(f) or {}
+entry = {
+    "version": os.getenv("GITHUB_SHA", "unknown"),
+    "commit": os.getenv("GITHUB_SHA", "unknown"),
+    "build_time": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+    "deployment_url": os.getenv("SITE_BASE_URL", ""),
+    "success": True
+}
+data.setdefault("builds", []).append(entry)
+with open(manifest_path, "w", encoding="utf-8") as f:
+    yaml.safe_dump(data, f, sort_keys=False)
+PY
+# 🔸 END WORKFLOW: deploy.yml

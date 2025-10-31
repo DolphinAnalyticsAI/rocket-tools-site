@@ -1,0 +1,25 @@
+<!-- 🔸 BEGIN BASE TEMPLATE: baseof.html -->
+<!doctype html>
+<html lang="en" data-theme="rocket">
+  <head>
+    {{ partial "head.html" . }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@4.10.5/dist/full.css" integrity="sha384-Z1cJKVsLh7YBIyEl+KpRgmKVVlyyxHfdWCm1m+0C/4Q6Xk1lSTP4S19FxjSCourS" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ "assets/css/output.css" | relURL }}">
+  </head>
+  <body class="min-h-screen bg-[color:var(--color-base-0)] text-[color:var(--text-soft)]">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    {{ partial "header.html" . }}
+    <div class="mx-auto flex w-full max-w-[92rem] gap-8 px-6 py-10">
+      {{ partial "sidebar.html" . }}
+      <main id="main-content" class="flex-1 space-y-10 rounded-[var(--radius-md)] bg-[color:var(--color-base-1)] p-8 shadow-[var(--shadow-md)]">
+        {{ block "main" . }}
+          {{ .Content }}
+        {{ end }}
+      </main>
+    </div>
+    {{ partial "footer.html" . }}
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+  </body>
+</html>
+<!-- 🔸 END BASE TEMPLATE: baseof.html -->

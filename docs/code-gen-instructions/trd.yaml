@@ -1,0 +1,247 @@
+# trd.yaml — Technical Requirements Document
+meta:
+  id: trd-rocket-tools
+  version: 0.1.0
+  linked_to: prd-rocket-tools
+  author: "Blaze Steel · Technical Architecture by GPT-5"
+  date: "2025-10-30"
+  status: "draft"
+  purpose: >
+    Define the full technical specification and implementation logic for the Rocket Tools website,
+    including build setup, stack configuration, interactivity model, serverless function contracts,
+    and AI-readability conventions.
+
+---
+
+system_overview:
+  stack:
+    - framework: "Hugo (Static Site Generator)"
+      rationale: "Fast, deterministic, and file-driven. Front matter as data."
+    - interactivity_layer:
+        alpine_js:
+          version: "3.x.x"
+          source: "https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+          mode: "declarative"
+          purpose: "Inline UI logic, state toggles, and reactive UI."
+        htmx:
+          version: "1.9.10+"
+          source: "https://unpkg.com/htmx.org@1.9.10"
+          purpose: "Server-driven interactions via HTML attributes, replacing SPAs."
+    - styling:
+        tailwind_css:
+          version: "4.1.0+"
+          install_method: "CLI only (no postcss.config.js, no tailwind.config.js)"
+          rationale: >
+            Tailwind 4.1+ introduces configuration-free design tokens and modern CSS variables.
+            Never use pre-4.1 versions or legacy config files. All design control handled inline or via DaisyUI tokens.
+        daisy_ui:
+          version: "4.x+"
+          purpose: "Lightweight UI components styled with Tailwind class utilities."
+    - backend:
+        netlify_functions:
+          runtime: "Node.js 20+"
+          location: "/site/netlify/functions/"
+          function_prefix: "fn-"
+          purpose: "Serverless logic for AI tool execution (OpenAI or compatible LLM)."
+    - ai_integration:
+        provider: "OpenAI-compatible endpoint"
+        model: "GPT-4-turbo or later"
+        request_pattern: "POST JSON { system_prompt, user_prompt, user_input }"
+        output_pattern: "streamed text response"
+
+  build_pipeline:
+    commands:
+      - "npx tailwindcss -i ./assets/css/input.css -o ./assets/css/output.css --minify"
+      - "hugo --minify --gc"
+    restrictions:
+      - "Never generate or require tailwind.config.js or postcss.config.js"
+      - "Never include node_modules in repo"
+      - "Use CDN whenever possible for client scripts"
+    environment_variables:
+      - "OPENAI_API_KEY"
+      - "NETLIFY_AUTH_TOKEN"
+      - "SITE_BASE_URL"
+    ci_cd_notes: >
+      GitHub Actions → triggers on push → run Tailwind CLI → Hugo build → Netlify deploy.
+      Validate success (HTTP 200) and append metadata to changelog.
+
+---
+
+frontend_components:
+  layout_structure:
+    base_template: "layouts/_default/baseof.html"
+    sections:
+      - head: "Includes meta tags, title, and Tailwind CSS output"
+      - body: "Includes sidebar (partial), main content, and scripts (Alpine, HTMX)"
+      - footer: "Optional site-wide footer partial"
+    scripts_order:
+      - "Alpine.js (defer)"
+      - "htmx.org"
+      - "Custom inline script for tool interactivity (optional)"
+  partials:
+    - name: "sidebar.html"
+      description: "Displays tool groups and their tools from /data/tool_groups.yaml"
+      behavior: |
+        <!-- Sidebar uses Alpine.js x-data for expansion state -->
+        <!-- Only one group open at a time -->
+        <!-- Links to /tools/<tool-id>/index.html -->
+      ai_doc_block: |
+        # 🔸 BEGIN PARTIAL: sidebar.html
+        # Purpose: Dynamic navigation tree rendered by Hugo and Alpine.js.
+        # Behavior: Expand/collapse tool groups; highlight active tool.
+        # AI Note: This is a reusable component. Do not alter logic when regenerating.
+        # 🔸 END PARTIAL
+    - name: "tool-metadata.html"
+      description: "Displays front matter metadata: title, description, examples, tags"
+      ai_doc_block: |
+        # 🔸 BEGIN PARTIAL: tool-metadata.html
+        # Purpose: Render structured metadata from Hugo front matter.
+        # Behavior: Read .Params and display semantic content blocks.
+        # AI Note: Preserve indentation, semantic HTML, and human readability.
+        # 🔸 END PARTIAL
+    - name: "run-tool.html"
+      description: "Input box, run button, and output display area"
+      behavior: |
+        Uses Alpine.js state:
+          - isLoading
+          - hasError
+          - message (status)
+        HTMX interaction:
+          - hx-post: '/.netlify/functions/run-tool'
+          - hx-target: '#tool-output'
+          - hx-swap: 'innerHTML'
+      ai_doc_block: |
+        # 🔸 BEGIN PARTIAL: run-tool.html
+        # Purpose: Handle user input and HTMX request.
+        # Components: Input area, Run button, Output container.
+        # Streams responses from backend and renders live output.
+        # 🔸 END PARTIAL
+
+---
+
+frontend_behavior:
+  alpine_patterns:
+    - name: "Sidebar Accordion"
+      pattern: |
+        <div x-data="{ open: null }">
+          <template x-for="group in toolGroups">
+            <details x-bind:open="open === group.name" @click="open = open === group.name ? null : group.name">
+              <summary x-text="group.name"></summary>
+              <ul>
+                <template x-for="tool in group.tools">
+                  <li><a :href="tool.url" x-text="tool.title"></a></li>
+                </template>
+              </ul>
+            </details>
+          </template>
+        </div>
+      documentation: |
+        # AI COMMENT BLOCK: Sidebar Accordion
+        # Purpose: Declarative Alpine.js pattern for one-group-at-a-time expansion.
+        # Replace inline lists dynamically using Hugo Data context.
+    - name: "Run Tool Button"
+      pattern: |
+        <button
+          class="btn btn-primary"
+          :disabled="isLoading"
+          hx-post="/.netlify/functions/run-tool"
+          hx-target="#tool-output"
+          hx-swap="innerHTML"
+          @click="isLoading = true"
+          @htmx:afterOnLoad="isLoading = false"
+          @htmx:error="hasError = true">
+          <span x-show="!isLoading">Run Tool</span>
+          <span x-show="isLoading" class="loading loading-spinner"></span>
+        </button>
+      documentation: |
+        # AI COMMENT BLOCK: Run Tool Button
+        # Behavior: HTMX triggers function POST; Alpine tracks loading/error states.
+        # AI Note: Maintain attributes order for readability; future refactoring uses partial extraction.
+
+  htmx_patterns:
+    - pattern_name: "Tool Output Swap"
+      markup: |
+        <div id="tool-output"
+             hx-swap-oob="true"
+             class="prose bg-base-100 p-4 rounded-box shadow-inner">
+          <!-- Output from Netlify Function will replace this area -->
+        </div>
+      description: "Receives streamed AI response and renders incrementally."
+      ai_doc_block: |
+        # AI DOC: Tool Output Swap Container
+        # Receives HTML fragments from backend.
+        # Do not inject scripts; sanitize server response.
+
+---
+
+backend_functions:
+  base_directory: "site/netlify/functions/"
+  naming_convention: "fn-[tool-id].js"
+  shared_utilities: "fn-shared/"
+  example_function:
+    name: "fn-run-tool.js"
+    description: "Handles POST requests from HTMX, sends to OpenAI, streams back results."
+    skeleton_code: |
+      // 🔸 BEGIN SERVERLESS FUNCTION: fn-run-tool.js
+      // Purpose: Execute selected tool prompt with user input and stream result.
+      // AI READABILITY: Comment each block clearly for ingestion and modification.
+      // Dependencies: none (built-in fetch)
+      // 🔸 CONFIG
+      const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+      const MODEL = "gpt-4-turbo";
+      
+      // 🔸 MAIN HANDLER
+      export async function handler(event) {
+        const body = JSON.parse(event.body || "{}");
+        const { system_prompt, user_prompt, user_input } = body;
+        
+        // 🔸 CALL OPENAI
+        const response = await fetch("https://api.openai.com/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${OPENAI_API_KEY}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            model: MODEL,
+            stream: true,
+            messages: [
+              { role: "system", content: system_prompt },
+              { role: "user", content: user_prompt.replace("{{input}}", user_input) }
+            ]
+          })
+        });
+        
+        // 🔸 STREAM BACK TO CLIENT
+        return {
+          statusCode: 200,
+          headers: { "Content-Type": "text/html" },
+          body: "<pre>Streaming output will appear here…</pre>"
+        };
+      }
+      // 🔸 END SERVERLESS FUNCTION
+    ai_doc_block: |
+      # AI DOC: fn-run-tool.js
+      # Streams partial HTML to client; keep logic deterministic and readable.
+      # Each block (CONFIG, HANDLER, CALL OPENAI, STREAM) documented for AI understanding.
+
+---
+
+ai_readability_conventions:
+  - "Every partial, component, and function must begin and end with labeled comment blocks."
+  - "All comments written in Markdown-style headers (#) or prefixed // 🔸 for JS."
+  - "Comment blocks summarize purpose, parameters, and relationships."
+  - "Hugo partials must include BEGIN/END markers with human-readable titles."
+  - "AI should be able to reconstruct file hierarchy from comments alone."
+  - "No minification in source repo; only at build time (Hugo --minify)."
+  - "Avoid magic numbers or unlabelled variables; use explicit constants."
+
+---
+
+validation_criteria:
+  - Tailwind 4.1+ confirmed via CLI version command
+  - No `tailwind.config.js` or `postcss.config.js` generated or committed
+  - Hugo build runs without errors
+  - All partials properly documented with BEGIN/END comment pairs
+  - Function responses validated against schema `{statusCode:int, headers:obj, body:string}`
+  - Accessibility tests (keyboard and screen reader) pass for Run Tool flow

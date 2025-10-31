@@ -1,0 +1,409 @@
+
+<!doctype html>
+<html lang="en" data-theme="rocket">
+  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guardrail Drafter · Rocket Tools</title>
+<meta name="description" content="Rocket Tools blends Hugo, HTMX, and Netlify Functions for AI-powered workflows.">
+<meta name="theme-color" content="hsl(215, 60%, 58%)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta name="generator" content="Hugo 0.141.0">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@4.10.5/dist/full.css" integrity="sha384-Z1cJKVsLh7YBIyEl+KpRgmKVVlyyxHfdWCm1m+0C/4Q6Xk1lSTP4S19FxjSCourS" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/output.css">
+  </head>
+  <body class="min-h-screen bg-[color:var(--color-base-0)] text-[color:var(--text-soft)]">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    
+
+<header class="sticky top-0 z-50 border-b border-[hsla(220,20%,95%,0.06)] bg-[color:var(--color-base-1)]/85 backdrop-blur-md">
+  <div class="mx-auto flex h-16 max-w-[92rem] items-center justify-between px-6">
+    <a href="http://localhost:1313/" class="text-lg font-semibold tracking-[0.08em] text-[color:var(--text-strong)] hover:text-[color:var(--color-accent)] transition-colors" aria-label="Rocket Tools home">
+      ROCKET
+    </a>
+    <nav aria-label="Primary" class="hidden gap-6 text-sm font-medium text-[color:var(--text-soft)] md:flex">
+      
+      
+        <a href="#" class="group relative inline-flex items-center gap-1 transition-all duration-200 hover:text-[color:var(--text-strong)]">
+          <span>Tools</span>
+          <span class="absolute -bottom-1 left-0 h-0.5 w-0 rounded-full bg-[color:var(--color-accent)] transition-all duration-200 group-hover:w-full"></span>
+        </a>
+      
+        <a href="#" class="group relative inline-flex items-center gap-1 transition-all duration-200 hover:text-[color:var(--text-strong)]">
+          <span>Articles</span>
+          <span class="absolute -bottom-1 left-0 h-0.5 w-0 rounded-full bg-[color:var(--color-accent)] transition-all duration-200 group-hover:w-full"></span>
+        </a>
+      
+        <a href="#" class="group relative inline-flex items-center gap-1 transition-all duration-200 hover:text-[color:var(--text-strong)]">
+          <span>About</span>
+          <span class="absolute -bottom-1 left-0 h-0.5 w-0 rounded-full bg-[color:var(--color-accent)] transition-all duration-200 group-hover:w-full"></span>
+        </a>
+      
+        <a href="#" class="group relative inline-flex items-center gap-1 transition-all duration-200 hover:text-[color:var(--text-strong)]">
+          <span>Contact</span>
+          <span class="absolute -bottom-1 left-0 h-0.5 w-0 rounded-full bg-[color:var(--color-accent)] transition-all duration-200 group-hover:w-full"></span>
+        </a>
+      
+    </nav>
+    <div class="flex items-center gap-3 text-[color:var(--text-dim)]">
+      
+        <a href="https://x.com/rockettools" class="transition-colors hover:text-[color:var(--color-accent)]" target="_blank" rel="noopener">X</a>
+      
+        <a href="https://github.com/rocket-coalition" class="transition-colors hover:text-[color:var(--color-accent)]" target="_blank" rel="noopener">GitHub</a>
+      
+        <a href="https://linkedin.com/company/rocket-coalition" class="transition-colors hover:text-[color:var(--color-accent)]" target="_blank" rel="noopener">LinkedIn</a>
+      
+    </div>
+  </div>
+</header>
+
+    <div class="mx-auto flex w-full max-w-[92rem] gap-8 px-6 py-10">
+      
+
+
+
+
+
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+      
+    
+  
+
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+    
+    
+  
+
+<aside class="shrink-0 w-[300px] min-w-[280px] rounded-[var(--radius-md)] bg-gradient-to-b from-[color:var(--color-base-2)] to-[color:var(--color-base-0)] p-4 text-sm text-[color:var(--text-soft)] sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto" aria-label="Tool navigation">
+  <div x-data="{ open: 'build-forge' }" class="space-y-4">
+    
+      <section class="rounded-[var(--radius-sm)] border border-[hsla(220,15%,40%,0.2)] bg-[color:var(--color-base-1)]">
+        <button
+          type="button"
+          class="flex w-full items-center justify-between px-4 py-3 text-left font-semibold text-[color:var(--text-soft)] transition-colors duration-200 hover:text-[color:var(--text-strong)] bg-transparent appearance-none min-h-[44px]"
+          @click="open = open === 'strategic-orbits' ? null : 'strategic-orbits'"
+          :aria-expanded="open === 'strategic-orbits'"
+          :aria-controls="'panel-strategic-orbits'"
+        >
+          <span class="uppercase tracking-widest text-xs text-[color:var(--text-dim)]">Strategic Orbits</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4 text-[color:var(--text-dim)] transition-transform duration-150" :class="open === 'strategic-orbits' ? 'rotate-90 text-[color:var(--color-accent)]' : ''" aria-hidden="true"><path fill-rule="evenodd" d="M7.22 14.28a.75.75 0 0 1 0-1.06L10.44 10 7.22 6.78a.75.75 0 1 1 1.06-1.06l3.5 3.5c.3.3.3.77 0 1.06l-3.5 3.5a.75.75 0 0 1-1.06 0Z" clip-rule="evenodd"/></svg>
+        </button>
+        <div id="panel-strategic-orbits" x-cloak x-show="open === 'strategic-orbits'" x-transition.opacity.duration.150ms class="space-y-1 px-2 pb-3">
+          
+            
+            <a
+              href="/tools/motive-map/"
+              class="group flex items-center gap-2 rounded-[var(--radius-sm)] px-3 py-2.5 min-h-[44px] transition-all duration-200 hover:bg-[color:var(--color-base-2)] "
+              aria-current="false"
+            >
+              <span class="h-8 w-1 rounded-[var(--radius-pill)] bg-[color:var(--color-accent)] transition-all duration-200 group-hover:w-1.5 "></span>
+              <span class="flex-1 text-[color:var(--text-strong)]">Motive Map</span>
+            </a>
+          
+            
+            <a
+              href="/tools/horizon-brief/"
+              class="group flex items-center gap-2 rounded-[var(--radius-sm)] px-3 py-2.5 min-h-[44px] transition-all duration-200 hover:bg-[color:var(--color-base-2)] "
+              aria-current="false"
+            >
+              <span class="h-8 w-1 rounded-[var(--radius-pill)] bg-[color:var(--color-accent)] transition-all duration-200 group-hover:w-1.5 "></span>
+              <span class="flex-1 text-[color:var(--text-strong)]">Horizon Brief</span>
+            </a>
+          
+            
+            <a
+              href="/tools/signal-handoff/"
+              class="group flex items-center gap-2 rounded-[var(--radius-sm)] px-3 py-2.5 min-h-[44px] transition-all duration-200 hover:bg-[color:var(--color-base-2)] "
+              aria-current="false"
+            >
+              <span class="h-8 w-1 rounded-[var(--radius-pill)] bg-[color:var(--color-accent)] transition-all duration-200 group-hover:w-1.5 "></span>
+              <span class="flex-1 text-[color:var(--text-strong)]">Signal Handoff</span>
+            </a>
+          
+            
+            <a
+              href="/tools/scenario-sculptor/"
+              class="group flex items-center gap-2 rounded-[var(--radius-sm)] px-3 py-2.5 min-h-[44px] transition-all duration-200 hover:bg-[color:var(--color-base-2)] "
+              aria-current="false"
+            >
+              <span class="h-8 w-1 rounded-[var(--radius-pill)] bg-[color:var(--color-accent)] transition-all duration-200 group-hover:w-1.5 "></span>
+              <span class="flex-1 text-[color:var(--text-strong)]">Scenario Sculptor</span>
+            </a>
+          
+        </div>
+      </section>
+    
+      <section class="rounded-[var(--radius-sm)] border border-[hsla(220,15%,40%,0.2)] bg-[color:var(--color-base-1)]">
+        <button
+          type="button"
+          class="flex w-full items-center justify-between px-4 py-3 text-left font-semibold text-[color:var(--text-soft)] transition-colors duration-200 hover:text-[color:var(--text-strong)] bg-transparent appearance-none min-h-[44px]"
+          @click="open = open === 'insight-lab' ? null : 'insight-lab'"
+          :aria-expanded="open === 'insight-lab'"
+          :aria-controls="'panel-insight-lab'"
+        >
+          <span class="uppercase tracking-widest text-xs text-[color:var(--text-dim)]">Insight Lab</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4 text-[color:var(--text-dim)] transition-transform duration-150" :class="open === 'insight-lab' ? 'rotate-90 text-[color:var(--color-accent)]' : ''" aria-hidden="true"><path fill-rule="evenodd" d="M7.22 14.28a.75.75 0 0 1 0-1.06L10.44 10 7.22 6.78a.75.75 0 1 1 1.06-1.06l3.5 3.5c.3.3.3.77 0 1.06l-3.5 3.5a.75.75 0 0 1-1.06 0Z" clip-rule="evenodd"/></svg>
+        </button>
+        <div id="panel-insight-lab" x-cloak x-show="open === 'insight-lab'" x-transition.opacity.duration.150ms class="space-y-1 px-2 pb-3">
+          
+            
+            <a
+              href="/tools/pattern-distiller/"
+              class="group flex items-center gap-2 rounded-[var(--radius-sm)] px-3 py-2.5 min-h-[44px] transition-all duration-200 hover:bg-[color:var(--color-base-2)] "
+              aria-current="false"
+            >
+              <span class="h-8 w-1 rounded-[var(--radius-pill)] bg-[color:var(--color-accent)] transition-all duration-200 group-hover:w-1.5 "></span>
+              <span class="flex-1 text-[color:var(--text-strong)]">Pattern Distiller</span>
+            </a>
+          
+            
+            <a
+              href="/tools/tension-hunter/"
+              class="group flex items-center gap-2 rounded-[var(--radius-sm)] px-3 py-2.5 min-h-[44px] transition-all duration-200 hover:bg-[color:var(--color-base-2)] "
+              aria-current="false"
+            >
+              <span class="h-8 w-1 rounded-[var(--radius-pill)] bg-[color:var(--color-accent)] transition-all duration-200 group-hover:w-1.5 "></span>
+              <span class="flex-1 text-[color:var(--text-strong)]">Tension Hunter</span>
+            </a>
+          
+            
+            <a
+              href="/tools/signal-stack/"
+              class="group flex items-center gap-2 rounded-[var(--radius-sm)] px-3 py-2.5 min-h-[44px] transition-all duration-200 hover:bg-[color:var(--color-base-2)] "
+              aria-current="false"
+            >
+              <span class="h-8 w-1 rounded-[var(--radius-pill)] bg-[color:var(--color-accent)] transition-all duration-200 group-hover:w-1.5 "></span>
+              <span class="flex-1 text-[color:var(--text-strong)]">Signal Stack</span>
+            </a>
+          
+            
+            <a
+              href="/tools/empathy-dossier/"
+              class="group flex items-center gap-2 rounded-[var(--radius-sm)] px-3 py-2.5 min-h-[44px] transition-all duration-200 hover:bg-[color:var(--color-base-2)] "
+              aria-current="false"
+            >
+              <span class="h-8 w-1 rounded-[var(--radius-pill)] bg-[color:var(--color-accent)] transition-all duration-200 group-hover:w-1.5 "></span>
+              <span class="flex-1 text-[color:var(--text-strong)]">Empathy Dossier</span>
+            </a>
+          
+        </div>
+      </section>
+    
+      <section class="rounded-[var(--radius-sm)] border border-[hsla(220,15%,40%,0.2)] bg-[color:var(--color-base-1)]">
+        <button
+          type="button"
+          class="flex w-full items-center justify-between px-4 py-3 text-left font-semibold text-[color:var(--text-soft)] transition-colors duration-200 hover:text-[color:var(--text-strong)] bg-transparent appearance-none min-h-[44px]"
+          @click="open = open === 'build-forge' ? null : 'build-forge'"
+          :aria-expanded="open === 'build-forge'"
+          :aria-controls="'panel-build-forge'"
+        >
+          <span class="uppercase tracking-widest text-xs text-[color:var(--text-dim)]">Build Forge</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4 text-[color:var(--text-dim)] transition-transform duration-150" :class="open === 'build-forge' ? 'rotate-90 text-[color:var(--color-accent)]' : ''" aria-hidden="true"><path fill-rule="evenodd" d="M7.22 14.28a.75.75 0 0 1 0-1.06L10.44 10 7.22 6.78a.75.75 0 1 1 1.06-1.06l3.5 3.5c.3.3.3.77 0 1.06l-3.5 3.5a.75.75 0 0 1-1.06 0Z" clip-rule="evenodd"/></svg>
+        </button>
+        <div id="panel-build-forge" x-cloak x-show="open === 'build-forge'" x-transition.opacity.duration.150ms class="space-y-1 px-2 pb-3">
+          
+            
+            <a
+              href="/tools/prompt-linter/"
+              class="group flex items-center gap-2 rounded-[var(--radius-sm)] px-3 py-2.5 min-h-[44px] transition-all duration-200 hover:bg-[color:var(--color-base-2)] "
+              aria-current="false"
+            >
+              <span class="h-8 w-1 rounded-[var(--radius-pill)] bg-[color:var(--color-accent)] transition-all duration-200 group-hover:w-1.5 "></span>
+              <span class="flex-1 text-[color:var(--text-strong)]">Prompt Linter</span>
+            </a>
+          
+            
+            <a
+              href="/tools/archetype-switchboard/"
+              class="group flex items-center gap-2 rounded-[var(--radius-sm)] px-3 py-2.5 min-h-[44px] transition-all duration-200 hover:bg-[color:var(--color-base-2)] "
+              aria-current="false"
+            >
+              <span class="h-8 w-1 rounded-[var(--radius-pill)] bg-[color:var(--color-accent)] transition-all duration-200 group-hover:w-1.5 "></span>
+              <span class="flex-1 text-[color:var(--text-strong)]">Archetype Switchboard</span>
+            </a>
+          
+            
+            <a
+              href="/tools/cadence-designer/"
+              class="group flex items-center gap-2 rounded-[var(--radius-sm)] px-3 py-2.5 min-h-[44px] transition-all duration-200 hover:bg-[color:var(--color-base-2)] "
+              aria-current="false"
+            >
+              <span class="h-8 w-1 rounded-[var(--radius-pill)] bg-[color:var(--color-accent)] transition-all duration-200 group-hover:w-1.5 "></span>
+              <span class="flex-1 text-[color:var(--text-strong)]">Cadence Designer</span>
+            </a>
+          
+            
+            <a
+              href="/tools/guardrail-drafter/"
+              class="group flex items-center gap-2 rounded-[var(--radius-sm)] px-3 py-2.5 min-h-[44px] transition-all duration-200 hover:bg-[color:var(--color-base-2)] bg-[color:var(--color-base-2)]"
+              aria-current="page"
+            >
+              <span class="h-8 w-1 rounded-[var(--radius-pill)] bg-[color:var(--color-accent)] transition-all duration-200 group-hover:w-1.5 w-1.5"></span>
+              <span class="flex-1 text-[color:var(--text-strong)]">Guardrail Drafter</span>
+            </a>
+          
+        </div>
+      </section>
+    
+      <section class="rounded-[var(--radius-sm)] border border-[hsla(220,15%,40%,0.2)] bg-[color:var(--color-base-1)]">
+        <button
+          type="button"
+          class="flex w-full items-center justify-between px-4 py-3 text-left font-semibold text-[color:var(--text-soft)] transition-colors duration-200 hover:text-[color:var(--text-strong)] bg-transparent appearance-none min-h-[44px]"
+          @click="open = open === 'launch-pad' ? null : 'launch-pad'"
+          :aria-expanded="open === 'launch-pad'"
+          :aria-controls="'panel-launch-pad'"
+        >
+          <span class="uppercase tracking-widest text-xs text-[color:var(--text-dim)]">Launch Pad</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4 text-[color:var(--text-dim)] transition-transform duration-150" :class="open === 'launch-pad' ? 'rotate-90 text-[color:var(--color-accent)]' : ''" aria-hidden="true"><path fill-rule="evenodd" d="M7.22 14.28a.75.75 0 0 1 0-1.06L10.44 10 7.22 6.78a.75.75 0 1 1 1.06-1.06l3.5 3.5c.3.3.3.77 0 1.06l-3.5 3.5a.75.75 0 0 1-1.06 0Z" clip-rule="evenodd"/></svg>
+        </button>
+        <div id="panel-launch-pad" x-cloak x-show="open === 'launch-pad'" x-transition.opacity.duration.150ms class="space-y-1 px-2 pb-3">
+          
+            
+            <a
+              href="/tools/output-polisher/"
+              class="group flex items-center gap-2 rounded-[var(--radius-sm)] px-3 py-2.5 min-h-[44px] transition-all duration-200 hover:bg-[color:var(--color-base-2)] "
+              aria-current="false"
+            >
+              <span class="h-8 w-1 rounded-[var(--radius-pill)] bg-[color:var(--color-accent)] transition-all duration-200 group-hover:w-1.5 "></span>
+              <span class="flex-1 text-[color:var(--text-strong)]">Output Polisher</span>
+            </a>
+          
+            
+            <a
+              href="/tools/feedback-mirror/"
+              class="group flex items-center gap-2 rounded-[var(--radius-sm)] px-3 py-2.5 min-h-[44px] transition-all duration-200 hover:bg-[color:var(--color-base-2)] "
+              aria-current="false"
+            >
+              <span class="h-8 w-1 rounded-[var(--radius-pill)] bg-[color:var(--color-accent)] transition-all duration-200 group-hover:w-1.5 "></span>
+              <span class="flex-1 text-[color:var(--text-strong)]">Feedback Mirror</span>
+            </a>
+          
+            
+            <a
+              href="/tools/telemetry-pulse/"
+              class="group flex items-center gap-2 rounded-[var(--radius-sm)] px-3 py-2.5 min-h-[44px] transition-all duration-200 hover:bg-[color:var(--color-base-2)] "
+              aria-current="false"
+            >
+              <span class="h-8 w-1 rounded-[var(--radius-pill)] bg-[color:var(--color-accent)] transition-all duration-200 group-hover:w-1.5 "></span>
+              <span class="flex-1 text-[color:var(--text-strong)]">Telemetry Pulse</span>
+            </a>
+          
+            
+            <a
+              href="/tools/replay-conductor/"
+              class="group flex items-center gap-2 rounded-[var(--radius-sm)] px-3 py-2.5 min-h-[44px] transition-all duration-200 hover:bg-[color:var(--color-base-2)] "
+              aria-current="false"
+            >
+              <span class="h-8 w-1 rounded-[var(--radius-pill)] bg-[color:var(--color-accent)] transition-all duration-200 group-hover:w-1.5 "></span>
+              <span class="flex-1 text-[color:var(--text-strong)]">Replay Conductor</span>
+            </a>
+          
+        </div>
+      </section>
+    
+  </div>
+</aside>
+
+      <main id="main-content" class="flex-1 space-y-10 rounded-[var(--radius-md)] bg-[color:var(--color-base-1)] p-8 shadow-[var(--shadow-md)]">
+        
+  
+  <article class="prose prose-invert max-w-none">
+    <!-- 🔸 BEGIN TOOL CONTENT: guardrail-drafter -->
+<p>Guardrail Drafter keeps launches safe without dulling the work.</p>
+<!-- 🔸 END TOOL CONTENT: guardrail-drafter -->
+  </article>
+  
+
+      </main>
+    </div>
+    
+
+<footer class="mt-16 border-t border-[hsla(220,20%,95%,0.05)] bg-gradient-to-b from-[hsl(220,15%,9%)] to-[hsl(220,15%,7%)] py-12 text-sm text-[color:var(--text-dim)]">
+  <div class="mx-auto grid max-w-[92rem] gap-10 px-6 md:grid-cols-3">
+    <section>
+      <h2 class="text-xs uppercase tracking-[0.3em] text-[color:var(--text-strong)]">Product</h2>
+      <ul class="mt-3 space-y-2">
+        <li><a class="transition-colors hover:text-[color:var(--text-strong)]" href="#">Overview</a></li>
+        <li><a class="transition-colors hover:text-[color:var(--text-strong)]" href="#">Tool Catalog</a></li>
+        <li><a class="transition-colors hover:text-[color:var(--text-strong)]" href="#">Roadmap</a></li>
+      </ul>
+    </section>
+    <section>
+      <h2 class="text-xs uppercase tracking-[0.3em] text-[color:var(--text-strong)]">Resources</h2>
+      <ul class="mt-3 space-y-2">
+        <li><a class="transition-colors hover:text-[color:var(--text-strong)]" href="#">Docs</a></li>
+        <li><a class="transition-colors hover:text-[color:var(--text-strong)]" href="#">Prompt Playbook</a></li>
+        <li><a class="transition-colors hover:text-[color:var(--text-strong)]" href="#">Community</a></li>
+      </ul>
+    </section>
+    <section>
+      <h2 class="text-xs uppercase tracking-[0.3em] text-[color:var(--text-strong)]">Company</h2>
+      <ul class="mt-3 space-y-2">
+        <li><a class="transition-colors hover:text-[color:var(--text-strong)]" href="#">About Rocket Coalition</a></li>
+        <li><a class="transition-colors hover:text-[color:var(--text-strong)]" href="#">Contact</a></li>
+        <li><a class="transition-colors hover:text-[color:var(--text-strong)]" href="#">Press</a></li>
+      </ul>
+    </section>
+  </div>
+  <div class="mx-auto mt-12 max-w-[92rem] px-6 text-xs text-[color:var(--text-soft)]">
+    © 2025 Rocket Coalition — Built light, built true.
+  </div>
+</footer>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+  </body>
+</html>

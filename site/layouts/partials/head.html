@@ -1,0 +1,18 @@
+<!--
+# 🔸 BEGIN PARTIAL: head.html
+# Purpose: Shared <head> metadata, fonts, and SEO foundations for Rocket Tools.
+# Inputs: .Site, .Title, .Params.summary
+# Relationships: Used by base layout before any body markup.
+# 🔸 END PARTIAL: head.html
+-->
+<!-- 🔸 BEGIN HEAD CONTENT -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ if .Title }}{{ .Title }} · {{ end }}{{ .Site.Title }}</title>
+<meta name="description" content="{{ with .Params.summary }}{{ . }}{{ else }}Rocket Tools blends Hugo, HTMX, and Netlify Functions for AI-powered workflows.{{ end }}">
+<meta name="theme-color" content="hsl(215, 60%, 58%)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+{{ hugo.Generator }}
+<!-- 🔸 END HEAD CONTENT -->

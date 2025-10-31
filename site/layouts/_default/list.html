@@ -1,0 +1,26 @@
+{{ define "main" }}
+  <!-- 🔸 BEGIN TEMPLATE: _default/list.html -->
+  <section class="space-y-6">
+    <header class="space-y-2">
+      <h1 class="text-3xl font-semibold tracking-[0.02em] text-[color:var(--text-strong)]">{{ .Title }}</h1>
+      {{ with .Params.summary }}
+        <p class="text-[color:var(--text-soft)]">{{ . }}</p>
+      {{ end }}
+    </header>
+    <div class="space-y-4">
+      {{ range .Pages }}
+        <article class="rounded-[var(--radius-md)] border border-[hsla(220,15%,40%,0.2)] bg-[color:var(--color-base-2)]/70 p-5 shadow-sm transition-colors duration-200 hover:border-[color:var(--color-accent)]">
+          <h2 class="text-xl font-medium text-[color:var(--text-strong)]">
+            <a href="{{ .RelPermalink }}" class="hover:text-[color:var(--color-accent)]">{{ .Title }}</a>
+          </h2>
+          {{ with .Summary }}
+            <p class="mt-2 text-sm text-[color:var(--text-soft)]">{{ . }}</p>
+          {{ end }}
+        </article>
+      {{ else }}
+        <p class="text-sm text-[color:var(--text-dim)]">No entries found yet. Check back soon.</p>
+      {{ end }}
+    </div>
+  </section>
+  <!-- 🔸 END TEMPLATE: _default/list.html -->
+{{ end }}

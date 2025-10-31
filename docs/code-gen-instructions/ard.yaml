@@ -1,0 +1,364 @@
+# ard.yaml — Architecture Requirements Document
+meta:
+  id: ard-rocket-tools
+  version: 0.1.0
+  date: "2025-10-30"
+  author: "Blaze Steel · Architecture by GPT-5 Thinking"
+  linked_schemas:
+    - prd-rocket-tools
+    - trd-rocket-tools
+  status: "draft"
+  intent: >
+    Define a deterministic, static-first architecture for Rocket Tools that maps
+    content (front matter), templates (Hugo), interactivity (Alpine + HTMX),
+    and integrations (Netlify Functions + LLM) into a single, repeatable system.
+
+principles:
+  - "Static by default; dynamic by HTMX."
+  - "Files are truth; front matter is the database."
+  - "Tailwind 4.1+ CLI only — no tailwind.config.js / postcss.config.js."
+  - "One responsibility per function; small, isolated serverless endpoints."
+  - "Commented, AI-ingestible code: BEGIN/END markers around reusable blocks."
+  - "Performance budgets and accessibility are architectural, not add-ons."
+
+# ──────────────────────────────────────────────────────────────────────────────
+# HIGH-LEVEL SYSTEM
+# ──────────────────────────────────────────────────────────────────────────────
+system_overview:
+  description: >
+    Rocket Tools is a Hugo-generated static site served at the edge.
+    The left sidebar (data-driven) routes to tool pages. Each tool page renders
+    educational metadata and an input surface. HTMX posts to a Netlify Function
+    that calls an LLM and streams HTML back into the output area. Alpine.js
+    manages state (loading, errors). Tailwind 4.1 + DaisyUI provide styling.
+  major_components:
+    - id: hugo_site
+      name: "Hugo Static Site"
+      responsibilities:
+        - Compile content + front matter to static HTML
+        - Render partials: sidebar, tool-metadata, run-tool
+        - Expose routes under /tools/<tool-id>/
+    - id: interactivity_layer
+      name: "Alpine.js + HTMX"
+      responsibilities:
+        - Alpine manages UI state & minimal logic
+        - HTMX issues POSTs and swaps output HTML live
+    - id: functions_layer
+      name: "Netlify Functions"
+      responsibilities:
+        - Receive tool run requests
+        - Compose LLM prompts from front matter
+        - Stream results (HTML chunks) back to client
+    - id: llm_provider
+      name: "OpenAI-compatible API"
+      responsibilities:
+        - Execute system & user prompts with user input
+        - Stream tokens
+    - id: cdn_edge
+      name: "Netlify Edge/CDN"
+      responsibilities:
+        - Serve static site with sub-50ms TTFB
+        - Cache assets aggressively
+
+# ──────────────────────────────────────────────────────────────────────────────
+# REPOSITORY & PATHS
+# ──────────────────────────────────────────────────────────────────────────────
+repo_layout:
+  root:
+    - /site/                          # Hugo root
+    - /site/content/                  # Markdown + front matter
+    - /site/layouts/                  # Hugo templates
+    - /site/layouts/partials/         # Sidebar, metadata, run-tool partials
+    - /site/assets/css/               # Tailwind input/output
+    - /site/data/                     # tool_groups.yaml, tool_tags.yaml
+    - /site/netlify/functions/        # Serverless functions (fn-*.js)
+    - /docs/                          # Generated build reports & changelog
+    - /.github/workflows/             # CI/CD
+  files_key:
+    - /site/assets/css/input.css
+    - /site/assets/css/output.css     # compiled by Tailwind CLI
+    - /site/data/tool_groups.yaml
+    - /site/data/tool_tags.yaml
+    - /site/layouts/partials/sidebar.html
+    - /site/layouts/partials/tool-metadata.html
+    - /site/layouts/partials/run-tool.html
+    - /site/netlify/functions/fn-run-tool.js  # router or single endpoint
+    - /site/content/tools/<tool-id>/index.md  # front matter per tool
+
+# ──────────────────────────────────────────────────────────────────────────────
+# CONTENT & DATA MODELS
+# ──────────────────────────────────────────────────────────────────────────────
+data_models:
+  front_matter_tool_schema:
+    id: string                 # slug; route: /tools/<id>/
+    title: string
+    description: string
+    group: string              # must match a group in /data/tool_groups.yaml
+    tool_tags: array[string]   # must match entries in /data/tool_tags.yaml
+    examples: array[string]    # short example prompts
+    educational_materials: string (markdown)
+    system_prompt: string
+    user_prompt_template: string  # contains "{{input}}"
+    ux_notes: string (optional)
+  data_files:
+    tool_groups_yaml:
+      path: /site/data/tool_groups.yaml
+      shape:
+        tool_groups: array[ { group: string, description: string, tools: array[ { id: string, title: string, icon: string } ] } ]
+    tool_tags_yaml:
+      path: /site/data/tool_tags.yaml
+      shape:
+        tool_tags: array[string]
+  validation_rules:
+    - "group must exist in tool_groups_yaml."
+    - "tool_tags[] must be subset of tool_tags_yaml."
+    - "user_prompt_template must include '{{input}}'."
+
+# ──────────────────────────────────────────────────────────────────────────────
+# RUNTIME FLOWS (SEQUENCES)
+# ──────────────────────────────────────────────────────────────────────────────
+runtime_flows:
+  page_load:
+    steps:
+      - "User hits / → Hugo serves index with sidebar partial (data-driven)."
+      - "Tailwind 4.1 output.css is linked (no legacy configs)."
+      - "Alpine.js initializes. No heavy JS executed."
+  select_tool:
+    steps:
+      - "User clicks a tool link in sidebar."
+      - "Hugo route /tools/<tool-id>/ renders tool page with metadata + run surface."
+  run_tool_success:
+    steps:
+      - "User enters text → clicks 'Run Tool'."
+      - "HTMX hx-post → /.netlify/functions/run-tool with payload {toolId, user_input}."
+      - "Function resolves tool metadata (optional pass-thru from client)."
+      - "Function composes prompts → calls LLM with stream=true."
+      - "Function sends incremental HTML chunks (safe, sanitized) to client."
+      - "HTMX swaps into #tool-output. Alpine clears loading state."
+  run_tool_error:
+    steps:
+      - "Function returns 4xx/5xx or network error."
+      - "HTMX emits error event; Alpine sets hasError=true; UI shows readable message + Retry."
+  iterate_rerun:
+    steps:
+      - "User modifies input or selects an example."
+      - "Repeat run_tool_success sequence."
+  telemetry_minimal:
+    steps:
+      - "Function optionally logs run metadata (toolId, status, duration) to Netlify Analytics or console (no PII)."
+
+# ──────────────────────────────────────────────────────────────────────────────
+# INTERFACES & CONTRACTS
+# ──────────────────────────────────────────────────────────────────────────────
+interfaces:
+  http_endpoints:
+    - id: run_tool_endpoint
+      method: POST
+      path: "/.netlify/functions/run-tool"
+      request_content_type: "application/json"
+      request_schema:
+        toolId: string              # /tools/<tool-id>
+        user_input: string          # raw text from user
+        # Optional: system_prompt, user_prompt_template (server should prefer canonical front matter)
+      response_streaming: true
+      response_type: "text/html (chunked)"
+      error_contract:
+        status_codes:
+          - 400: "Validation error (missing input or invalid toolId)."
+          - 429: "Rate limited."
+          - 500: "Upstream LLM or function error."
+        body: |
+          <div class="alert alert-error">Human-readable error with retry hint.</div>
+  htmx_contracts:
+    post_attributes:
+      hx-post: "/.netlify/functions/run-tool"
+      hx-target: "#tool-output"
+      hx-swap: "innerHTML"
+      hx-vals: "{ toolId: '<tool-id>' }"   # or include in JSON payload via JavaScript hook
+  alpine_state_contracts:
+    run_surface_state:
+      isLoading: boolean
+      hasError: boolean
+      message: string
+
+# ──────────────────────────────────────────────────────────────────────────────
+# PRESENTATION & STYLING (TAILWIND 4.1+ ONLY)
+# ──────────────────────────────────────────────────────────────────────────────
+presentation_rules:
+  tailwind:
+    version_requirement: ">=4.1.0"
+    generation: "CLI only: npx tailwindcss -i ./assets/css/input.css -o ./assets/css/output.css --minify"
+    prohibitions:
+      - "Do NOT create tailwind.config.js or postcss.config.js (legacy)."
+      - "Do NOT pin to pre-4.1 releases."
+  daisyui:
+    usage: "Use DaisyUI classes for buttons, alerts, badges, and layout primitives."
+  typography:
+    content_area: "prose max-w-none"
+  accessibility:
+    minimum: "WCAG 2.1 AA for contrast; complete keyboard access for navigation and run."
+
+# ──────────────────────────────────────────────────────────────────────────────
+# PARTIALS & AI-READABILITY CONVENTIONS
+# ──────────────────────────────────────────────────────────────────────────────
+partials:
+  required:
+    - name: "sidebar.html"
+      begin_marker: "<!-- 🔸 BEGIN PARTIAL: sidebar.html -->"
+      end_marker:   "<!-- 🔸 END PARTIAL: sidebar.html -->"
+      contract: "Renders tool_groups from /data/tool_groups.yaml; one group open at a time."
+    - name: "tool-metadata.html"
+      begin_marker: "<!-- 🔸 BEGIN PARTIAL: tool-metadata.html -->"
+      end_marker:   "<!-- 🔸 END PARTIAL: tool-metadata.html -->"
+      contract: "Renders title, description, examples, tags, educational materials."
+    - name: "run-tool.html"
+      begin_marker: "<!-- 🔸 BEGIN PARTIAL: run-tool.html -->"
+      end_marker:   "<!-- 🔸 END PARTIAL: run-tool.html -->"
+      contract: "Input area, Run button (HTMX), Output container with stream-friendly markup."
+  documentation_rules:
+    - "Each partial must include a top doc block describing purpose, inputs, and relationships."
+    - "Comment blocks are human-readable and AI-parseable; keep consistent markers."
+    - "No logic hidden in unrelated files; partials remain cohesive."
+
+# ──────────────────────────────────────────────────────────────────────────────
+# SERVERLESS FUNCTIONS
+# ──────────────────────────────────────────────────────────────────────────────
+functions:
+  directory: "/site/netlify/functions/"
+  naming: "fn-<name>.js"
+  shared_utils_dir: "/site/netlify/functions/fn-shared/"
+  router_strategy:
+    option: "single-router"
+    file: "fn-run-tool.js"
+    rationale: "Simpler deploy footprint; route by toolId; reuse shared LLM caller."
+  contracts:
+    environment:
+      required:
+        - OPENAI_API_KEY
+      optional:
+        - SITE_BASE_URL
+    code_markers:
+      begin: "// 🔸 BEGIN SERVERLESS FUNCTION: <file>"
+      end:   "// 🔸 END SERVERLESS FUNCTION"
+    logging:
+      policy: "No PII; log toolId, duration, outcome, truncated input length."
+    limits:
+      input_chars_max: 4000
+      request_timeout_ms: 30000
+      rate_limit_note: "Apply simple token bucket or rely on Netlify rate policies."
+  streaming:
+    transport: "SSE or chunked HTML; HTMX-compatible streaming."
+    client_expectation: "Output container (#tool-output) receives incremental HTML fragments."
+  error_policy:
+    user_message: "Plain-language error with retry; hide stack traces."
+    categories:
+      - "validation_error"
+      - "upstream_error"
+      - "rate_limit"
+      - "unknown"
+    mapping:
+      validation_error: 400
+      upstream_error: 502
+      rate_limit: 429
+      unknown: 500
+
+# ──────────────────────────────────────────────────────────────────────────────
+# SECURITY & PRIVACY
+# ──────────────────────────────────────────────────────────────────────────────
+security:
+  model:
+    - "No secrets on client."
+    - "Read-only public surface (static)."
+    - "Isolated serverless functions; least privilege."
+  input_sanitization:
+    - "Trim, length-check, and escape potentially dangerous characters."
+    - "Reject binary payloads; text only."
+  headers:
+    required:
+      - "Content-Security-Policy: default-src 'self' https: 'unsafe-inline' 'unsafe-eval';"
+      - "X-Content-Type-Options: nosniff"
+      - "Referrer-Policy: strict-origin-when-cross-origin"
+  pii_policy:
+    - "Do not store or echo back sensitive info."
+    - "Redact obvious identifiers if present."
+
+# ──────────────────────────────────────────────────────────────────────────────
+# PERFORMANCE BUDGETS
+# ──────────────────────────────────────────────────────────────────────────────
+performance:
+  budgets:
+    ttfb_edge_ms: 50
+    first_token_ms: 1500
+    css_total_kb: 250              # post-minify (Tailwind 4.1 output)
+    js_total_kb: 60                # Alpine + HTMX + minimal inline
+  strategies:
+    - "Static HTML on edge; immutable cache."
+    - "Stream early tokens to improve perceived latency."
+    - "Use DaisyUI components sparingly; purge unused via Tailwind 4.1 defaults."
+    - "No client bundlers; load from CDN when reasonable."
+
+# ──────────────────────────────────────────────────────────────────────────────
+# OBSERVABILITY & QA
+# ──────────────────────────────────────────────────────────────────────────────
+observability:
+  metrics_minimum:
+    - "function_runs_total (by toolId)"
+    - "function_error_rate"
+    - "median_first_token_ms"
+    - "median_duration_ms"
+  logs:
+    - "console logs in functions (sanitized)"
+    - "edge/CDN access logs (aggregate only)"
+  audit:
+    accessibility:
+      tool: "Lighthouse or axe-core (CI or manual)"
+      targets:
+        - "Keyboard nav on sidebar and Run Tool"
+        - "Color contrast AA on buttons and alerts"
+    html_validation: "Hugo build with --gc; link check optional"
+
+# ──────────────────────────────────────────────────────────────────────────────
+# CI/CD & DEPLOY
+# ──────────────────────────────────────────────────────────────────────────────
+cicd_pipeline:
+  trigger: "push to main"
+  steps:
+    - "Install Hugo (extended) and Tailwind CLI."
+    - "npx tailwindcss -i ./assets/css/input.css -o ./assets/css/output.css --minify"
+    - "hugo --minify --gc --source site"
+    - "Netlify deploy (prod) using NETLIFY_AUTH_TOKEN"
+    - "Verify SITE_BASE_URL returns HTTP 200"
+    - "Append docs/build-manifest.yaml and docs/changelog.md"
+  artifacts:
+    - "/site/public/"
+  gates:
+    - "Fail if tailwind.config.js or postcss.config.js exist."
+    - "Fail if accessibility checks < AA for critical paths."
+
+# ──────────────────────────────────────────────────────────────────────────────
+# MIGRATION & EXTENSIBILITY
+# ──────────────────────────────────────────────────────────────────────────────
+evolution:
+  add_new_tool:
+    steps:
+      - "Create /site/content/tools/<tool-id>/index.md with front matter schema."
+      - "Update /site/data/tool_groups.yaml with id/title/icon."
+      - "No code changes required; partials render automatically."
+  deprecate_tool:
+    steps:
+      - "Mark content draft: true and optionally add redirect."
+      - "Remove from tool_groups.yaml."
+  multi-endpoint_option:
+    description: "Split fn-run-tool.js into per-tool endpoints if needed."
+    tradeoff: "Slightly more deploy artifacts; clearer isolation."
+
+# ──────────────────────────────────────────────────────────────────────────────
+# VALIDATION CHECKLIST
+# ──────────────────────────────────────────────────────────────────────────────
+validation:
+  - "All partials include BEGIN/END markers and top doc blocks."
+  - "Tailwind 4.1+ enforced; no legacy configs present."
+  - "HTMX POST → function roundtrip works with sample tool."
+  - "Streamed output renders incrementally in #tool-output."
+  - "Keyboard-only path covers: open group, select tool, focus input, run, read output."
+  - "Error messages are plain language; retry works."

@@ -1,0 +1,40 @@
+<!--
+# 🔸 BEGIN PARTIAL: footer.html
+# Purpose: Site-wide footer with three columns and legal line.
+# Inputs: None (static copy), inherits global theme tokens.
+# Relationships: Included at the bottom of base layout.
+# 🔸 END PARTIAL: footer.html
+-->
+<!-- 🔸 BEGIN FOOTER -->
+<footer class="mt-16 border-t border-[hsla(220,20%,95%,0.05)] bg-gradient-to-b from-[hsl(220,15%,9%)] to-[hsl(220,15%,7%)] py-12 text-sm text-[color:var(--text-dim)]">
+  <div class="mx-auto grid max-w-[92rem] gap-10 px-6 md:grid-cols-3">
+    <section>
+      <h2 class="text-xs uppercase tracking-[0.3em] text-[color:var(--text-strong)]">Product</h2>
+      <ul class="mt-3 space-y-2">
+        <li><a class="transition-colors hover:text-[color:var(--text-strong)]" href="#">Overview</a></li>
+        <li><a class="transition-colors hover:text-[color:var(--text-strong)]" href="#">Tool Catalog</a></li>
+        <li><a class="transition-colors hover:text-[color:var(--text-strong)]" href="#">Roadmap</a></li>
+      </ul>
+    </section>
+    <section>
+      <h2 class="text-xs uppercase tracking-[0.3em] text-[color:var(--text-strong)]">Resources</h2>
+      <ul class="mt-3 space-y-2">
+        <li><a class="transition-colors hover:text-[color:var(--text-strong)]" href="#">Docs</a></li>
+        <li><a class="transition-colors hover:text-[color:var(--text-strong)]" href="#">Prompt Playbook</a></li>
+        <li><a class="transition-colors hover:text-[color:var(--text-strong)]" href="#">Community</a></li>
+      </ul>
+    </section>
+    <section>
+      <h2 class="text-xs uppercase tracking-[0.3em] text-[color:var(--text-strong)]">Company</h2>
+      <ul class="mt-3 space-y-2">
+        <li><a class="transition-colors hover:text-[color:var(--text-strong)]" href="#">About Rocket Coalition</a></li>
+        <li><a class="transition-colors hover:text-[color:var(--text-strong)]" href="#">Contact</a></li>
+        <li><a class="transition-colors hover:text-[color:var(--text-strong)]" href="#">Press</a></li>
+      </ul>
+    </section>
+  </div>
+  <div class="mx-auto mt-12 max-w-[92rem] px-6 text-xs text-[color:var(--text-soft)]">
+    © {{ now.Format "2006" }} Rocket Coalition — Built light, built true.
+  </div>
+</footer>
+<!-- 🔸 END FOOTER -->

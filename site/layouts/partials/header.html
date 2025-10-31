@@ -1,0 +1,30 @@
+<!--
+# 🔸 BEGIN PARTIAL: header.html
+# Purpose: Global top navigation with logo, primary links, and social icons.
+# Inputs: .Site.Menus.main (optional), fallback arrays defined inline.
+# Relationships: Included in base layout; anchors skip link focus order.
+# 🔸 END PARTIAL: header.html
+-->
+<!-- 🔸 BEGIN HEADER -->
+<header class="sticky top-0 z-50 border-b border-[hsla(220,20%,95%,0.06)] bg-[color:var(--color-base-1)]/85 backdrop-blur-md">
+  <div class="mx-auto flex h-16 max-w-[92rem] items-center justify-between px-6">
+    <a href="{{ .Site.BaseURL }}" class="text-lg font-semibold tracking-[0.08em] text-[color:var(--text-strong)] hover:text-[color:var(--color-accent)] transition-colors" aria-label="Rocket Tools home">
+      ROCKET
+    </a>
+    <nav aria-label="Primary" class="hidden gap-6 text-sm font-medium text-[color:var(--text-soft)] md:flex">
+      {{ $links := slice "Tools" "Articles" "About" "Contact" }}
+      {{ range $links }}
+        <a href="#" class="group relative inline-flex items-center gap-1 transition-all duration-200 hover:text-[color:var(--text-strong)]">
+          <span>{{ . }}</span>
+          <span class="absolute -bottom-1 left-0 h-0.5 w-0 rounded-full bg-[color:var(--color-accent)] transition-all duration-200 group-hover:w-full"></span>
+        </a>
+      {{ end }}
+    </nav>
+    <div class="flex items-center gap-3 text-[color:var(--text-dim)]">
+      {{ range $icon := slice (dict "name" "X" "href" "https://x.com/rockettools") (dict "name" "GitHub" "href" "https://github.com/rocket-coalition") (dict "name" "LinkedIn" "href" "https://linkedin.com/company/rocket-coalition") }}
+        <a href="{{ $icon.href }}" class="transition-colors hover:text-[color:var(--color-accent)]" target="_blank" rel="noopener">{{ $icon.name }}</a>
+      {{ end }}
+    </div>
+  </div>
+</header>
+<!-- 🔸 END HEADER -->

@@ -1,0 +1,59 @@
+<!--
+# 🔸 BEGIN PARTIAL: run-tool.html
+# Purpose: Render the interactive surface for running a tool via HTMX + Alpine state.
+# Inputs: .Params.system_prompt, .Params.user_prompt_template, .Params.id
+# Relationships: Posts to Netlify function, updates #tool-output container inline.
+# 🔸 END PARTIAL: run-tool.html
+-->
+<!-- 🔸 BEGIN RUN TOOL -->
+<section x-data="{
+    isLoading: false,
+    hasError: false,
+    message: '',
+    prefill(text) {
+      const input = document.getElementById('tool-input');
+      if (!input) return;
+      input.value = text;
+      input.focus();
+    }
+  }"
+  @htmx:beforeRequest="isLoading = true; hasError = false; message = 'Running…'"
+  @htmx:afterOnLoad="isLoading = false; message = 'Complete.'"
+  @htmx:error="isLoading = false; hasError = true; message = 'Something went wrong. Try again.'"
+  class="space-y-6"
+>
+  <form
+    hx-post="/.netlify/functions/fn-run-tool"
+    hx-target="#tool-output"
+    hx-swap="innerHTML"
+    hx-trigger="submit"
+    hx-vals='{"toolId": {{ .Params.id | jsonify }}, "system_prompt": {{ .Params.system_prompt | jsonify }}, "user_prompt_template": {{ .Params.user_prompt_template | jsonify }} }'
+    class="space-y-6"
+  >
+    <div class="space-y-3">
+      <label for="tool-input" class="text-sm font-medium text-[color:var(--text-strong)]">Your input</label>
+      <textarea
+        id="tool-input"
+        name="user_input"
+        class="h-36 w-full resize-y rounded-[var(--radius-sm)] border border-[hsla(220,15%,40%,0.3)] bg-[color:var(--color-base-2)] p-4 text-sm text-[color:var(--text-soft)] focus-visible:ring-2 focus-visible:ring-[color:var(--color-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-[color:var(--color-base-0)]"
+        placeholder="Describe what you need the tool to solve…"
+        required
+      ></textarea>
+    </div>
+    <div class="flex flex-wrap items-center gap-3">
+      <button type="submit" class="btn btn-primary" :disabled="isLoading">
+        <span x-show="!isLoading">Run Tool</span>
+        <span x-show="isLoading" class="flex items-center gap-2">
+          <span class="loading loading-spinner"></span>
+          Running…
+        </span>
+      </button>
+      <button type="button" class="btn btn-outline" :disabled="isLoading" @click="document.getElementById('tool-input').value=''; message=''; hasError=false;">Clear</button>
+      <p class="text-sm" :class="hasError ? 'text-[color:var(--color-error)]' : 'text-[color:var(--text-dim)]'" x-text="message"></p>
+    </div>
+  </form>
+  <div id="tool-output" class="min-h-32 rounded-[var(--radius-md)] border border-[hsla(220,15%,40%,0.3)] bg-[color:var(--color-base-2)]/80 p-6 text-sm leading-relaxed text-[color:var(--text-soft)]">
+    <p class="italic">Outputs appear here. Run the tool to see streamed results.</p>
+  </div>
+</section>
+<!-- 🔸 END RUN TOOL -->

@@ -1,0 +1,63 @@
+# 🔸 BEGIN DATA: tool_groups.yaml
+groups:
+  - id: strategic-orbits
+    name: "Strategic Orbits"
+    tools:
+      - id: motive-map
+        title: "Motive Map"
+        description: "Chart the psychological motive of your AI agent before writing prompts."
+      - id: horizon-brief
+        title: "Horizon Brief"
+        description: "Translate a business goal into a succinct, AI-ready creative brief."
+      - id: signal-handoff
+        title: "Signal Handoff"
+        description: "Prepare handoff documentation that keeps AI output on-message across teams."
+      - id: scenario-sculptor
+        title: "Scenario Sculptor"
+        description: "Generate contrasting future scenarios to stress-test strategy."
+  - id: insight-lab
+    name: "Insight Lab"
+    tools:
+      - id: pattern-distiller
+        title: "Pattern Distiller"
+        description: "Condense research transcripts into thematic insights with evidence."
+      - id: tension-hunter
+        title: "Tension Hunter"
+        description: "Expose contradictions in customer feedback to fuel positioning."
+      - id: signal-stack
+        title: "Signal Stack"
+        description: "Stack weak signals into a cohesive trend narrative."
+      - id: empathy-dossier
+        title: "Empathy Dossier"
+        description: "Craft persona dossiers blending facts with motivating emotions."
+  - id: build-forge
+    name: "Build Forge"
+    tools:
+      - id: prompt-linter
+        title: "Prompt Linter"
+        description: "Evaluate prompt drafts for clarity, motive alignment, and structure."
+      - id: archetype-switchboard
+        title: "Archetype Switchboard"
+        description: "Transform prompts between archetypal voices without losing intent."
+      - id: cadence-designer
+        title: "Cadence Designer"
+        description: "Lay out iterative prompt sequences that teach the model progressively."
+      - id: guardrail-drafter
+        title: "Guardrail Drafter"
+        description: "Author safety guardrails that balance creativity with compliance."
+  - id: launch-pad
+    name: "Launch Pad"
+    tools:
+      - id: output-polisher
+        title: "Output Polisher"
+        description: "Refine LLM drafts into publication-ready copy with tonal fidelity."
+      - id: feedback-mirror
+        title: "Feedback Mirror"
+        description: "Reflect user critique into actionable LLM prompt adjustments."
+      - id: telemetry-pulse
+        title: "Telemetry Pulse"
+        description: "Summarize telemetry streams into a concise health report."
+      - id: replay-conductor
+        title: "Replay Conductor"
+        description: "Generate replay scripts to demonstrate tool workflows to teams."
+# 🔸 END DATA: tool_groups.yaml

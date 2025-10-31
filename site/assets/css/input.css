@@ -1,0 +1,190 @@
+/* 🔸 BEGIN CSS: input.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 🔸 BEGIN THEME TOKENS */
+:root {
+  --color-base-0: hsl(220, 15%, 10%);
+  --color-base-1: hsl(220, 14%, 13%);
+  --color-base-2: hsl(220, 12%, 17%);
+  --color-primary: hsl(215, 60%, 58%);
+  --color-primary-600: hsl(215, 55%, 52%);
+  --color-primary-700: hsl(215, 50%, 45%);
+  --color-secondary: hsl(255, 25%, 68%);
+  --color-accent: hsl(185, 50%, 65%);
+  --color-success: hsl(150, 35%, 55%);
+  --color-warning: hsl(38, 80%, 60%);
+  --color-error: hsl(0, 60%, 60%);
+  --text-strong: hsl(220, 20%, 92%);
+  --text-soft: hsl(220, 15%, 75%);
+  --text-dim: hsl(220, 10%, 55%);
+  --radius-xs: 5px;
+  --radius-sm: 7px;
+  --radius-md: 9px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 1px 2px hsla(220, 15%, 5%, 0.25);
+  --shadow-md: 0 8px 22px hsla(220, 20%, 6%, 0.25);
+  --shadow-inner: inset 0 1px 0 hsla(220, 20%, 90%, 0.04);
+  --motion-duration: 200ms;
+  --motion-easing: cubic-bezier(0.22, 1, 0.36, 1);
+  --focus-ring: 0 0 0 2px hsla(215, 60%, 58%, 0.45);
+  --focus-offset: 0 0 0 4px hsla(220, 15%, 10%, 0.85);
+  --gradient-layered-radial-1: hsla(215, 60%, 58%, 0.05);
+  --gradient-layered-radial-2: hsla(185, 50%, 65%, 0.05);
+  --gradient-layered-linear-1: hsla(220, 15%, 11%, 0.95);
+  --gradient-layered-linear-2: hsla(220, 12%, 14%, 0.95);
+}
+/* 🔸 END THEME TOKENS */
+
+/* Hide Alpine cloaked regions to prevent layout jump */
+[x-cloak] { display: none !important; }
+
+/* 🔸 BEGIN DAISYUI THEME MAP */
+:root {
+  --p: var(--color-primary);
+  --pf: hsl(215, 60%, 92%);
+  --pc: var(--text-strong);
+  --s: var(--color-secondary);
+  --sf: hsl(255, 25%, 90%);
+  --sc: var(--text-strong);
+  --a: var(--color-accent);
+  --af: hsl(185, 50%, 90%);
+  --ac: var(--color-base-0);
+  --n: var(--color-base-1);
+  --nf: var(--color-base-2);
+  --nc: var(--text-soft);
+  --b1: var(--color-base-1);
+  --b2: var(--color-base-2);
+  --bc: var(--text-soft);
+  --success: var(--color-success);
+  --warning: var(--color-warning);
+  --error: var(--color-error);
+}
+/* 🔸 END DAISYUI THEME MAP */
+
+/* 🔸 BEGIN GLOBAL SURFACE */
+body {
+  background-color: var(--color-base-0);
+  color: var(--text-soft);
+  transition: color var(--motion-duration) var(--motion-easing),
+    background-color var(--motion-duration) var(--motion-easing);
+  background-image:
+    radial-gradient(circle at 20% 20%, var(--gradient-layered-radial-1), transparent),
+    radial-gradient(circle at 80% 10%, var(--gradient-layered-radial-2), transparent),
+    linear-gradient(180deg, var(--gradient-layered-linear-1), var(--gradient-layered-linear-2));
+}
+/* 🔸 END GLOBAL SURFACE */
+
+/* 🔸 BEGIN TYPOGRAPHY */
+h1, h2, h3 {
+  color: var(--text-strong);
+  letter-spacing: 0.01em;
+}
+
+p, li {
+  color: var(--text-soft);
+}
+/* Apply VDD typefaces */
+body {
+  font-family: "Inter", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+h1, h2, h3 {
+  font-family: "Inter Tight", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+}
+
+code, pre {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+/* Link styling per VDD subtle accent hover */
+a {
+  color: var(--text-soft);
+  text-decoration: none;
+  transition: color var(--motion-duration) var(--motion-easing);
+}
+
+a:hover {
+  color: var(--color-accent);
+}
+/* 🔸 END TYPOGRAPHY */
+
+/* 🔸 BEGIN FOCUS RINGS */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+*:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring), var(--focus-offset);
+}
+/* 🔸 END FOCUS RINGS */
+
+/* 🔸 BEGIN COMPONENT POLISH */
+.btn-primary {
+  transition: transform var(--motion-duration) var(--motion-easing),
+    filter var(--motion-duration) var(--motion-easing);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.03);
+  transform: scale(1.01);
+}
+
+.btn-primary:active {
+  transform: translateY(1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.card {
+  background: var(--color-base-2);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-md);
+  border: 1px solid hsla(220, 12%, 40%, 0.18);
+}
+/* 🔸 END COMPONENT POLISH */
+
+/* 🔸 BEGIN CODE BLOCKS */
+code,
+pre {
+  background: linear-gradient(180deg, hsl(220, 12%, 16%), hsl(220, 12%, 13%));
+  color: hsl(185, 45%, 70%);
+  border-radius: var(--radius-xs);
+  padding: 0.15rem 0.3rem;
+}
+/* 🔸 END CODE BLOCKS */
+
+/* 🔸 BEGIN MOTION PREFERENCES */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+/* 🔸 END MOTION PREFERENCES */
+
+/* 🔸 BEGIN SKIP LINK */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -120%);
+  background-color: var(--color-primary);
+  color: var(--color-base-0);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  transition: transform var(--motion-duration) var(--motion-easing);
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  transform: translate(-50%, 20%);
+}
+/* 🔸 END SKIP LINK */
+/* 🔸 END CSS: input.css */

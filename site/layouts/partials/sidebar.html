@@ -1,0 +1,51 @@
+<!--
+# 🔸 BEGIN PARTIAL: sidebar.html
+# Purpose: Data-driven accordion navigation for tool groups and their tools.
+# Inputs: .Site.Data.tool_groups, .RelPermalink
+# Relationships: Works with Alpine.js for single-open-group behavior.
+# 🔸 END PARTIAL: sidebar.html
+-->
+<!-- 🔸 BEGIN SIDEBAR -->
+{{ $current := .RelPermalink }}
+{{ $scratch := newScratch }}
+{{ $scratch.Set "open" "" }}
+{{ range $g := .Site.Data.tool_groups.groups }}
+  {{ range $t := $g.tools }}
+    {{ $tgt := printf "/tools/%s/" $t.id }}
+    {{ if eq $current $tgt }}
+      {{ $scratch.Set "open" $g.id }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+<aside class="shrink-0 w-[300px] min-w-[260px] rounded-[var(--radius-md)] bg-gradient-to-b from-[color:var(--color-base-2)] to-[color:var(--color-base-0)] p-4 text-sm text-[color:var(--text-soft)] sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto" aria-label="Tool navigation">
+  <div x-data="{ open: '{{ $scratch.Get "open" }}' }" class="space-y-3">
+    {{ range $group := .Site.Data.tool_groups.groups }}
+      <section class="rounded-[var(--radius-sm)] border border-[hsla(220,15%,40%,0.18)] bg-[color:var(--color-base-1)]/90">
+        <button
+          type="button"
+          class="group flex w-full items-center justify-between gap-3 rounded-[var(--radius-sm)] px-3 py-2 text-left text-xs font-semibold text-[color:var(--text-dim)] transition-colors duration-150 hover:text-[color:var(--text-strong)]"
+          @click="open = open === '{{ $group.id }}' ? null : '{{ $group.id }}'"
+          :aria-expanded="open === '{{ $group.id }}'"
+          :aria-controls="'panel-{{ $group.id }}'"
+        >
+          <span>{{ $group.name }}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4 text-[color:var(--text-dim)] transition-transform duration-150 group-hover:text-[color:var(--color-accent)]" :class="open === '{{ $group.id }}' ? 'rotate-90 text-[color:var(--color-accent)]' : ''" aria-hidden="true"><path fill-rule="evenodd" d="M7.22 14.28a.75.75 0 0 1 0-1.06L10.44 10 7.22 6.78a.75.75 0 1 1 1.06-1.06l3.5 3.5c.3.3.3.77 0 1.06l-3.5 3.5a.75.75 0 0 1-1.06 0Z" clip-rule="evenodd"/></svg>
+        </button>
+        <div id="panel-{{ $group.id }}" x-cloak x-show="open === '{{ $group.id }}'" x-transition.opacity.duration.150ms class="space-y-1 px-2 pb-3">
+          {{ range $tool := $group.tools }}
+            {{ $target := printf "/tools/%s/" $tool.id }}
+            <a
+              href="{{ $target }}"
+              class="group flex items-center gap-2 rounded-[var(--radius-sm)] px-3 py-2 text-sm transition-colors duration-150 hover:bg-[color:var(--color-base-2)]/80 {{ if eq $current $target }}bg-[color:var(--color-base-2)]{{ end }}"
+              aria-current="{{ if eq $current $target }}page{{ else }}false{{ end }}"
+            >
+              <span class="h-5 w-[3px] rounded-[var(--radius-pill)] bg-[color:var(--color-accent)] transition-all duration-150 group-hover:w-1 {{ if eq $current $target }}w-1{{ end }}"></span>
+              <span class="flex-1 text-[color:var(--text-strong)]">{{ $tool.title }}</span>
+            </a>
+          {{ end }}
+        </div>
+      </section>
+    {{ end }}
+  </div>
+</aside>
+<!-- 🔸 END SIDEBAR -->

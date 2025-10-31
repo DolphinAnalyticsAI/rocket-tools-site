@@ -1,0 +1,13 @@
+{{ define "main" }}
+  <!-- 🔸 BEGIN TEMPLATE: tool/single.html -->
+  <header class="space-y-2">
+    <h1 class="text-3xl font-bold tracking-tight text-[color:var(--text-strong)]">{{ .Title }}</h1>
+    {{ with .Params.description }}
+      <p class="max-w-prose text-[color:var(--text-soft)]">{{ . }}</p>
+    {{ end }}
+  </header>
+  <div class="h-4"></div>
+  {{ partial "tool-metadata.html" . }}
+  {{ partial "run-tool.html" . }}
+  <!-- 🔸 END TEMPLATE: tool/single.html -->
+{{ end }}

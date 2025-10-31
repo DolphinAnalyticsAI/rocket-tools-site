@@ -1,0 +1,50 @@
+<!--
+# 🔸 BEGIN PARTIAL: tool-metadata.html
+# Purpose: Present tool front matter (title, description, examples, teaching insights).
+# Inputs: .Params.{title,description,tool_tags,examples,teaching_materials}
+# Relationships: Included at top of tool content blocks before run surface.
+# 🔸 END PARTIAL: tool-metadata.html
+-->
+<!-- 🔸 BEGIN TOOL METADATA -->
+<section class="space-y-6">
+  <header class="space-y-2">
+    <h1 class="text-3xl font-semibold tracking-[0.01em] text-[color:var(--text-strong)]">{{ .Params.title }}</h1>
+    <p class="max-w-3xl text-base text-[color:var(--text-soft)]">{{ .Params.description }}</p>
+    {{ with .Params.tool_tags }}
+      <div class="flex flex-wrap gap-2 pt-2">
+        {{ range . }}
+          <span class="badge badge-outline border-[color:var(--color-accent)] text-[color:var(--color-accent)]">{{ . }}</span>
+        {{ end }}
+      </div>
+    {{ end }}
+  </header>
+
+  {{ with .Params.examples }}
+    <section class="space-y-3">
+      <h2 class="text-lg font-medium text-[color:var(--text-strong)]">Examples</h2>
+      <div class="grid gap-3 md:grid-cols-2">
+        {{ range $index, $example := . }}
+          <article class="card p-4 text-sm leading-relaxed text-[color:var(--text-soft)]">
+            <div class="flex items-start justify-between gap-3">
+              <h3 class="text-xs uppercase tracking-[0.2em] text-[color:var(--text-dim)]">Example {{ add $index 1 }}</h3>
+              <button class="btn btn-xs" type="button" hx-post="/.netlify/functions/run-tool" hx-target="#tool-input" hx-trigger="click" hx-vals='{ "prefill": {{ $example | jsonify }} }'>Copy to input</button>
+            </div>
+            <p class="mt-3">{{ $example }}</p>
+          </article>
+        {{ end }}
+      </div>
+    </section>
+  {{ end }}
+
+  {{ with .Params.teaching_materials }}
+    <section class="space-y-3">
+      <h2 class="text-lg font-medium text-[color:var(--text-strong)]">Teaching Notes</h2>
+      <div class="space-y-2">
+        {{ range . }}
+          <p class="rounded-[var(--radius-sm)] border border-[hsla(215, 60%, 58%, 0.15)] bg-[color:var(--color-base-2)]/60 p-3 text-sm leading-relaxed">{{ . }}</p>
+        {{ end }}
+      </div>
+    </section>
+  {{ end }}
+</section>
+<!-- 🔸 END TOOL METADATA -->

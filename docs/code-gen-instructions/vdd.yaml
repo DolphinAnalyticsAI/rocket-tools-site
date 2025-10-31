@@ -1,0 +1,232 @@
+# vdd.yaml — Visual Design Document (HSL • Dusty Modern Pastel • Subtle Precision)
+meta:
+  id: vdd-rocket-tools
+  version: 0.2.0
+  date: "2025-10-30"
+  author: "Blaze Steel · Visual System by GPT-5 Thinking"
+  linked_schemas:
+    - prd-rocket-tools
+    - trd-rocket-tools
+    - ard-rocket-tools
+  status: "stable"
+  notes:
+    - "Tailwind 4.1+ CLI only — no tailwind.config.js or postcss.config.js"
+    - "All theming lives in /site/assets/css/input.css via CSS variables + DaisyUI theme tokens"
+    - "Design ethos: dusty modern pastels, HSL everywhere, elegance through restraint"
+
+# ---------------------------------------------------------------------------
+# VISUAL ETHOS
+# ---------------------------------------------------------------------------
+philosophy:
+  keywords: [dusty, modern, matte, luminous, calm, crafted]
+  narrative: >
+    The interface should feel handcrafted yet computational—like brushed metal under soft light.
+    No neon, no gloss.  Colors are muted HSL blends; shadows and gradients mimic natural diffusion.
+    The user’s attention drifts naturally to content because everything else feels quietly correct.
+
+# ---------------------------------------------------------------------------
+# COLOR SYSTEM  (All HSL)
+# ---------------------------------------------------------------------------
+colors:
+  base:
+    base-0:  "hsl(220, 15%, 10%)"
+    base-1:  "hsl(220, 14%, 13%)"
+    base-2:  "hsl(220, 12%, 17%)"
+  brand:
+    primary:        "hsl(215, 60%, 58%)"    # dusty steel-blue
+    primary-600:    "hsl(215, 55%, 52%)"
+    primary-700:    "hsl(215, 50%, 45%)"
+    secondary:      "hsl(255, 25%, 68%)"    # lavender-gray whisper
+    accent:         "hsl(185, 50%, 65%)"    # aqua-mist hover
+  signals:
+    success: "hsl(150, 35%, 55%)"
+    warning: "hsl(38, 80%, 60%)"
+    error:   "hsl(0, 60%, 60%)"
+  text:
+    strong: "hsl(220, 20%, 92%)"
+    soft:   "hsl(220, 15%, 75%)"
+    dim:    "hsl(220, 10%, 55%)"
+  gradients:
+    layered_background:
+      radial-1: "hsla(215, 60%, 58%, 0.05)"
+      radial-2: "hsla(185, 50%, 65%, 0.05)"
+      linear-1: "hsla(220, 15%, 11%, 0.95)"
+      linear-2: "hsla(220, 12%, 14%, 0.95)"
+  polish:
+    shimmer:
+      description: "Very slow 8s background luminance drift—Alpine toggled via prefers-color-scheme."
+      colors: ["hsla(215,60%,58%,0.02)", "hsla(255,25%,68%,0.02)", "hsla(185,50%,65%,0.02)"]
+    edge_light:
+      description: "1px top highlight on cards using accent color * 5% opacity—adds tactile edge."
+
+# ---------------------------------------------------------------------------
+# TYPOGRAPHY
+# ---------------------------------------------------------------------------
+typography:
+  fonts:
+    headings: "Inter Tight:wght@600..800"
+    body: "Inter:wght@400..600"
+    mono: "JetBrains Mono:wght@400..700"
+  style:
+    headings:
+      color: "var(--text-strong)"
+      tracking: "0.01em"
+      line_height: "1.1"
+    body:
+      color: "var(--text-soft)"
+      line_height: "1.6"
+    code:
+      background: "hsl(220, 12%, 16%)"
+      color: "hsl(185, 45%, 70%)"
+      padding: "0.15rem 0.3rem"
+      radius: "var(--radius-xs)"
+  subtleties:
+    optical_alignment: "Apply -0.5px optical adjustment for h1–h3 in CSS to anchor left edges."
+    ink_trap: "Slight letter-spacing tightening on large headings for professional density."
+
+# ---------------------------------------------------------------------------
+# SPATIAL SYSTEM
+# ---------------------------------------------------------------------------
+radii:
+  xs: "5px"
+  sm: "7px"
+  md: "9px"
+  lg: "12px"
+  pill: "999px"
+shadows:
+  sm: "0 1px 2px hsla(220,15%,5%,0.25)"
+  md: "0 8px 22px hsla(220,20%,6%,0.25)"
+  inner: "inset 0 1px 0 hsla(220,20%,90%,0.04)"
+depth_touches:
+  micro_layer: "Use a translucent 1px border lighter than surface by +8% L for tactile realism."
+  surface_blend: "Overlay linear-gradient(180deg,hsla(220,12%,16%,0.96),hsla(220,12%,12%,0.96))"
+
+# ---------------------------------------------------------------------------
+# MOTION  (Alpine-driven micro-motion everywhere)
+# ---------------------------------------------------------------------------
+motion:
+  standard_duration: 200ms
+  easing: "cubic-bezier(0.22, 1, 0.36, 1)"
+  sitewide_transition_properties: [color, background-color, border-color, box-shadow, transform, opacity, filter]
+  alpine_effects:
+    - id: "fade-slide"
+      desc: "Opacity + translateY 4px, ease-out, used for section reveals."
+    - id: "pulse-sheen"
+      desc: "Very faint 3% brightness pulse on hover for CTAs; uses Alpine x-transition."
+    - id: "smooth-nav"
+      desc: "Header/nav items cross-fade + slide under 200 ms with accent underline animation."
+  nuance:
+    parallax_hint: "1° Y tilt on hero/logo responsive to pointer via Alpine for living depth (≤2px)."
+  accessibility:
+    reduce_motion: true
+
+# ---------------------------------------------------------------------------
+# LAYOUT ELEMENTS
+# ---------------------------------------------------------------------------
+layout:
+  header:
+    height: "64px"
+    surface: "backdrop-blur md + semi-transparent base-2"
+    border_bottom: "1px solid hsla(220,20%,95%,0.06)"
+    logo_placeholder:
+      text: "ROCKET"
+      letter_spacing: "0.08em"
+      glow: "text-shadow:0 0 6px hsla(215,60%,58%,0.15)"
+    nav_links: ["Tools", "Articles", "About", "Contact"]
+    nav_hover: "underline slide-in with accent 2px bar"
+    social_icons: ["X", "GitHub", "LinkedIn"]
+  sidebar:
+    width: "300px"
+    background: "gradient(180deg,var(--color-charcoal),var(--color-midnight))"
+    text_colors:
+      group: "hsl(220,10%,55%)"
+      tool:  "hsl(220,20%,92%)"
+    highlight: "Left accent bar in primary (2px) with smooth expand on hover."
+  main:
+    max_width: "92rem"
+    surface: "var(--color-base-1)"
+    rounded: "var(--radius-md)"
+    elevation: "var(--shadow-md)"
+    prose_enhancements:
+      code_blocks: "Premium monospaced blocks with inner glow."
+      prompt_blocks: "Gradient frames with floating labels."
+  footer:
+    variant: "darker-than-sidebar"
+    gradient: "linear-gradient(180deg,hsl(220,15%,9%),hsl(220,15%,7%))"
+    border_top: "1px solid hsla(220,20%,95%,0.05)"
+    columns:
+      count: 3
+      titles: ["Product","Resources","Company"]
+      example_links:
+        Product: ["Rocket Tools","AI Personas","Guardrail Architect"]
+        Resources: ["Docs","Blog","Changelog","Community"]
+        Company: ["About","Contact","Privacy","Terms"]
+    legal_line: "© Rocket Coalition — Built light, built true."
+
+# ---------------------------------------------------------------------------
+# COMPONENT POLISH
+# ---------------------------------------------------------------------------
+components:
+  buttons:
+    style: "btn btn-primary rounded-sm shadow-soft"
+    hover: "brightness +3% + slight scale 1.01"
+    active: "translateY 1px and shadow contract"
+  inputs:
+    style: "bg-base-2 text-soft rounded-sm border border-[hsla(220,15%,40%,0.3)]"
+    focus: "ring 2 ring-primary ring-offset-2"
+  cards:
+    surface: "bg-base-2 rounded-md shadow-soft border-micro_layer"
+    hover: "inner shadow lift 5%"
+  code_blocks:
+    background: "linear-gradient(180deg,hsl(220,12%,16%),hsl(220,12%,13%))"
+    accent_bar: "2px solid hsl(215,60%,58%)"
+    copy_button: "monochrome glass pill hover:accent"
+  prompt_blocks:
+    gradient: "linear-gradient(180deg,hsla(215,60%,58%,0.12),hsla(185,50%,65%,0.08))"
+    label:
+      background: "hsl(215,60%,58%)"
+      text_color: "hsl(220,15%,10%)"
+      font_size: ".7rem"
+      letter_spacing: ".04em"
+      padding: ".2rem .5rem"
+      shadow: "0 1px 2px hsla(220,15%,5%,0.3)"
+  highlights:
+    cursor_ring: "subtle outer ring primary opacity 0.15 following pointer via Alpine"
+    focus_ripple: "200 ms radial ripple on interactive elements opacity 0.1"
+
+# ---------------------------------------------------------------------------
+# BACKGROUND & TEXTURE
+# ---------------------------------------------------------------------------
+background:
+  default_image:
+    file: "/site/static/images/bg/rocket-default.webp"
+    alt: "soft abstract paper-grain texture with faint diagonal light"
+    size_budget_kb: 280
+    style: "overlay with layered gradients for motionless depth"
+  replacement_guidelines:
+    - "Use subtle grain textures or blurred photography; avoid pattern repeat."
+    - "Keep luminance within 5–15% variance so content remains primary."
+
+# ---------------------------------------------------------------------------
+# ACCESSIBILITY & RESPONSIVENESS
+# ---------------------------------------------------------------------------
+accessibility:
+  contrast: "AA minimum"
+  focus_rings: "visible 2px primary offset 2px"
+  keyboard_flow: "Logo → Nav → Sidebar → Main → Footer"
+  skip_link: true
+responsive:
+  breakpoints: {mobile: "<640px", tablet: "640–1024px", desktop: "≥1024px"}
+  sidebar_behavior: "off-canvas with fade-backdrop on mobile"
+  footer_stack: "columns → vertical stack with dividers below 640px"
+
+# ---------------------------------------------------------------------------
+# VALIDATION
+# ---------------------------------------------------------------------------
+validation_checklist:
+  - "All palette tokens in HSL."
+  - "Global transitions = 200 ms smooth."
+  - "Sidebar + footer contrast AA or better."
+  - "Alpine micro-motions registered and degrade gracefully."
+  - "Code/prompt blocks render with label and copy button."
+  - "No visual element dominates content; beauty felt, not noticed."

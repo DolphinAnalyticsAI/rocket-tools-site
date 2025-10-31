@@ -1,0 +1,58 @@
+{{ define "main" }}
+  <!-- 🔸 BEGIN TEMPLATE: index.html -->
+  <section class="space-y-12">
+    <header class="space-y-6 rounded-[var(--radius-lg)] border border-[hsla(220,18%,40%,0.22)] bg-[color:var(--color-base-1)]/85 p-8 shadow-[var(--shadow-md)] sm:p-10">
+      <span class="inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.3em] text-[color:var(--color-accent)]">
+        <span class="inline-flex h-2 w-2 rounded-full bg-[color:var(--color-accent)]"></span>
+        Mission Control Update
+      </span>
+      <div class="space-y-3">
+        <h1 class="text-4xl font-semibold leading-tight tracking-tight text-[color:var(--text-strong)] sm:text-5xl">Invite your team into a single launchpad for AI tooling.</h1>
+        <p class="max-w-2xl text-lg leading-relaxed text-[color:var(--text-soft)]">Rocket Tools stitches together strategic canvases, insight generators, and build accelerators so every prompt sprint starts with clarity. Bring stakeholders in, run the playbook together, and ship confident output.</p>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <a href="#group-directory" class="inline-flex items-center gap-2 rounded-[var(--radius-pill)] bg-[color:var(--color-accent)] px-5 py-2.5 text-sm font-medium text-[color:var(--color-base-0)] transition-transform duration-200 hover:-translate-y-0.5">
+          Explore the toolkit
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path fill-rule="evenodd" d="M10.22 4.72a.75.75 0 0 1 1.06 0l4 4a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 1 1-1.06-1.06l2.72-2.72H5.75a.75.75 0 0 1 0-1.5h7.19l-2.72-2.72a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg>
+        </a>
+        <a href="/tools/" class="inline-flex items-center gap-2 rounded-[var(--radius-pill)] border border-[hsla(220,18%,40%,0.35)] px-5 py-2.5 text-sm font-medium text-[color:var(--text-strong)] transition duration-200 hover:border-[color:var(--color-accent)] hover:text-[color:var(--color-accent)]">
+          View all tools
+        </a>
+      </div>
+      <dl class="grid gap-4 text-sm text-[color:var(--text-dim)] sm:grid-cols-3">
+        <div>
+          <dt class="font-semibold text-[color:var(--text-soft)]">Strategy to ship</dt>
+          <dd>Four mission groups cover research, design, build, and launch so nothing falls between teams.</dd>
+        </div>
+        <div>
+          <dt class="font-semibold text-[color:var(--text-soft)]">Ready-to-run prompts</dt>
+          <dd>Every tool includes guidance, copy-ready prompts, and a live run surface to trial in seconds.</dd>
+        </div>
+        <div>
+          <dt class="font-semibold text-[color:var(--text-soft)]">Playbooks that travel</dt>
+          <dd>File-driven content keeps updates simple—version it, ship it, and keep your org in sync.</dd>
+        </div>
+      </dl>
+    </header>
+    {{ $summaries := dict "strategic-orbits" "Frame the mission before you brief the model—these tools set flight paths and guardrails." "insight-lab" "Spin raw research into signal so teams align on the story the data is telling." "build-forge" "Workshop prompts, voices, and guardrails until everything is production tight." "launch-pad" "Polish, monitor, and adapt live output so your rollout keeps altitude." }}
+    <div id="group-directory" class="grid gap-4 sm:grid-cols-2">
+      {{ range .Site.Data.tool_groups.groups }}
+        {{ $defaultSummary := index $summaries .id }}
+        <article class="rounded-[var(--radius-md)] border border-[hsla(220,15%,40%,0.2)] bg-[color:var(--color-base-2)]/70 p-6 shadow-sm transition-transform duration-200 hover:-translate-y-1">
+          <h2 class="text-xl font-semibold text-[color:var(--text-strong)]">{{ .name }}</h2>
+          {{ with (or .summary $defaultSummary) }}
+            <p class="mt-2 text-sm text-[color:var(--text-soft)]">{{ . }}</p>
+          {{ end }}
+          <ul class="mt-4 space-y-1 text-sm">
+            {{ range .tools }}
+              <li>
+                <a class="hover:text-[color:var(--color-accent)]" href="/tools/{{ .id }}/">{{ .title }}</a>
+              </li>
+            {{ end }}
+          </ul>
+        </article>
+      {{ end }}
+    </div>
+  </section>
+  <!-- 🔸 END TEMPLATE: index.html -->
+{{ end }}

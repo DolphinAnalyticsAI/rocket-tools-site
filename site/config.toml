@@ -1,0 +1,14 @@
+# 🔸 BEGIN CONFIG: config.toml
+baseURL = "https://example.com/"
+languageCode = "en-us"
+title = "Rocket Tools"
+disableKinds = ["taxonomy", "term"]
+
+[params]
+  summary = "AI-enabled tooling lab built with Hugo, HTMX, and Netlify Functions."
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+# 🔸 END CONFIG: config.toml

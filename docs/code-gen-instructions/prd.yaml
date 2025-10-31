@@ -1,0 +1,244 @@
+# prd.yaml — Product Requirements Document
+meta:
+  id: prd-rocket-tools
+  name: "Rocket Tools"
+  version: 0.1.0
+  date: "2025-10-30"
+  owner: "Rocket Coalition"
+  author: "Blaze Steel (persona) · compiled by GPT-5 Thinking"
+  status: "draft"
+  related_schemas:
+    - trd.yaml
+    - ard.yaml
+    - vdd.yaml
+    - cgd.yaml
+
+product:
+  summary: >
+    Rocket Tools is an interactive, static website that lets users explore and run AI-powered tools
+    inside a Hugo-generated interface. The left sidebar organizes tool groups; selecting a tool loads
+    its workspace on the right with metadata, teaching materials, and an input form. Users run the tool
+    via an HTMX request to a Netlify Function that calls an LLM and streams the result back. Alpine.js
+    manages UI state (loading, errors, retry). Tool pages are driven by AI-generated front matter.
+
+  vision: >
+    Stop micromanaging AI. Start designing minds. Rocket Tools educates builders while delivering
+    instant, useful outputs—merging a developer-IDE feel with motive-driven AI tooling.
+
+  goals:
+    - Provide a fast, lightweight tool lab with zero SPA overhead.
+    - Teach users prompt psychology and cognitive architecture alongside each tool.
+    - Make every tool self-contained via front matter for portability and automation.
+    - Deliver sub-100ms perceived interactions (edge-served HTML + streamed results).
+    - Enable simple expansion of new tools/groups with minimal developer effort.
+
+  non_goals:
+    - Building a full user-auth system or multi-tenant SaaS.
+    - Long-lived server sessions or complex client-side state management.
+    - Traditional CMS authoring or database persistence beyond files.
+
+audience:
+  primary_personas:
+    - id: persona-ai-tinkerer
+      name: "AI Tinkerer"
+      goals:
+        - Try small ideas quickly, learn by doing
+        - Get fast, legible outputs to riff on
+      frustrations:
+        - Heavy frameworks, slow feedback loops
+        - Opaque prompts and brittle results
+    - id: persona-prompt-architect
+      name: "Prompt Architect"
+      goals:
+        - Design motive-driven prompts/personas
+        - Reuse structures, compare results, teach teams
+      frustrations:
+        - Template sprawl, lack of pedagogy
+    - id: persona-agency-strategist
+      name: "Agency Strategist"
+      goals:
+        - Package repeatable workflows for clients
+        - Export/sharable artifacts and clear documentation
+      frustrations:
+        - Vendor lock-in, runtime flakiness
+    - id: persona-corporate-innovator
+      name: "Corporate Innovator"
+      goals:
+        - Evaluate AI tool value quickly
+        - Low-risk PoCs with measurable outcomes
+      frustrations:
+        - Security/compliance overhead of dynamic stacks
+
+experience-principles:
+  - "Fast understanding: tools explain themselves in one screen."
+  - "Exploratory learning: examples + teaching woven into the UI."
+  - "HTML-first honesty: behavior declared, not hidden."
+  - "Psychological depth over flash: motive-driven prompts, not micromanaged steps."
+  - "Consistency: left = navigation; right = workspace."
+
+scope:
+  must_have:
+    - Left sidebar with expandable tool groups (initially 4 groups × 4 tools).
+    - Tool workspace with: metadata, examples, teaching materials, input, run button, streamed output.
+    - HTMX POST to Netlify Function per tool; Alpine.js handles loading/errors/retry.
+    - Tool data in front matter (title, description, examples, system_prompt, user_prompt_template, tool_tags, group).
+    - Responsive layout and keyboard accessibility for core actions.
+  should_have:
+    - Tag badges and filtering surface (front matter–driven).
+    - Copy/export output (clipboard + downloadable text/markdown).
+    - Lightweight telemetry (tool runs count, success/error rates) via serverless.
+  could_have:
+    - In-page compare: rerun variants and diff outputs.
+    - “Teaching mode” that reveals prompt-engineering insights inline.
+    - Offline-ready read mode for metadata/teaching materials.
+
+out_of_scope:
+  - Accounts, billing, and roles.
+  - Persistent databases for user data.
+  - Complex WYSIWYG editors—content remains file-based/front matter.
+
+information-architecture:
+  mental_model:
+    left_panel: "Tool Groups → Tools (navigation)"
+    right_panel: "Selected Tool Workspace (metadata → input → output)"
+  content_model:
+    tool:
+      fields:
+        - id
+        - title
+        - description
+        - group
+        - tool_tags[]
+        - examples[]
+        - educational_materials (markdown)
+        - system_prompt
+        - user_prompt_template
+        - ux_notes (optional)
+  navigation_rules:
+    - Only one group expanded at a time (accordion behavior).
+    - Selecting a tool loads its page route and hydrates workspace.
+
+core-use-cases:
+  - id: uc-discover
+    name: "Discover a tool"
+    flow:
+      - Land on site; see left sidebar with groups.
+      - Expand a group; scan tool list with icons/titles.
+      - Select a tool; workspace loads with metadata and examples.
+    success:
+      - User identifies correct tool within 10 seconds.
+  - id: uc-run
+    name: "Run a tool"
+    preconditions:
+      - Tool workspace visible with input instructions.
+    flow:
+      - Enter input; click "Run Tool".
+      - HTMX POST hits Netlify Function; Alpine shows loading.
+      - Response streams into output area; errors are readable with retry.
+    success:
+      - First output renders in < 2s perceived (streaming/partial acceptable).
+  - id: uc-iterate
+    name: "Iterate & learn"
+    flow:
+      - Adjust input or pick an example; rerun quickly.
+      - Read teaching materials; apply prompt insights.
+      - Copy/save results.
+    success:
+      - User comfortably produces an improved second output.
+
+requirements:
+  functional:
+    - Sidebar renders from data/tool_groups.yaml.
+    - Tool pages render from front matter; no DB.
+    - HTMX attributes handle POST + swap for results area.
+    - Netlify Functions expose per-tool endpoints (or a multiplexer) that call LLM.
+    - Alpine.js controls state: isLoading, hasError, message.
+    - Output area supports text and simple HTML (code blocks, lists).
+  nonfunctional:
+    performance:
+      - Global edge TTFB target: ≤ 50ms (static assets).
+      - First streamed token: ≤ 1.5s on median connection.
+    accessibility:
+      - Keyboard operable (sidebar, run button, retry).
+      - ARIA roles for status/alerts during loading and errors.
+      - Color contrast meets WCAG AA.
+    reliability:
+      - Error surfaces include actionable message + retry.
+      - No full-page reloads during runs.
+    security:
+      - No secret keys on client.
+      - Functions validate/limit input size and rate.
+
+acceptance-criteria:
+  - id: ac-sidebar
+    text: "Users can expand/collapse groups and navigate to any tool with keyboard and pointer."
+  - id: ac-workspace
+    text: "A tool page shows name, description, examples, teaching materials, tags, and input form."
+  - id: ac-run-stream
+    text: "Clicking Run triggers a visible loading state and streams a response into the output area."
+  - id: ac-error
+    text: "If an error occurs, the UI shows a human-readable message and a Retry button."
+  - id: ac-no-reload
+    text: "Running tools never requires a full page reload; content swaps inline."
+  - id: ac-responsive
+    text: "Layout remains usable on mobile, tablet, and desktop breakpoints."
+  - id: ac-export
+    text: "Users can copy output to clipboard; optional download as .md or .txt if enabled."
+
+kpis:
+  product:
+    - weekly-active-users
+    - avg-tools-run-per-session
+    - time-to-first-run (median)
+    - iteration-rate (avg reruns per session)
+    - error-rate (function + UI)
+  learning:
+    - teaching-materials-engagement (dwell/expand rate)
+    - example-usage-rate
+  growth:
+    - organic-traffic to tool pages
+    - return-visit-rate (7/30-day)
+  quality:
+    - accessibility-audit-score
+    - median-first-token-latency
+
+content-strategy:
+  tone: "developer-IDE, instructional, minimal ornamentation"
+  voice: "Blaze Steel (grounded, concise, empathic)"
+  components:
+    - short instructional text per tool (what to input; who it’s for)
+    - 2–3 examples with copy-to-input affordance
+    - 10 prompt-engineering insights per flagship tool (optional reveal)
+  tagging:
+    - tool_tags used for discovery (badges/filters), not Hugo built-in tags.
+
+constraints:
+  - No traditional DB; files/front matter only.
+  - Static-first; dynamic behavior strictly via HTMX and serverless.
+  - Keep bundle weight minimal; prefer CDN for small libs when applicable.
+  - Privacy first: no PII storage; redact sensitive inputs in logs.
+
+risks_and_mitigations:
+  - risk: "LLM latency causes poor perceived performance."
+    mitigation: "Stream responses; surface partial output quickly; cache instructional content."
+  - risk: "Users confused about what to input."
+    mitigation: "Clear instruction text, examples with one-click inject."
+  - risk: "Function errors degrade trust."
+    mitigation: "Plain-language error messaging + retry + lightweight telemetry."
+  - risk: "Tool sprawl reduces coherence."
+    mitigation: "Curate groups; consistent metadata schema; deprecate quietly with redirects."
+
+release-plan:
+  mvp:
+    - 4 groups × 4 tools (16 total), including at least 2 “teaching-forward” tools.
+    - Single multipurpose Netlify Function (router) or 4–6 specific functions.
+    - Copy/export output and minimal telemetry.
+  phase_2:
+    - Tag filtering; compare runs; downloadable transcripts.
+  phase_3:
+    - Content caching; tool auto-refresh checks; analytics dashboards (read-only).
+
+glossary:
+  - haxi: "Hugo + Alpine + HTMX + Integrations (serverless) + AI layer."
+  - front_matter: "YAML metadata embedded in Markdown that drives tool rendering."
+  - streamed_output: "Incremental token/line delivery to output area for perceived speed."

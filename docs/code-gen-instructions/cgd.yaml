@@ -1,0 +1,274 @@
+# cgd.yaml — Code Generation Document
+meta:
+  id: cgd-rocket-tools
+  version: 1.0.0
+  date: "2025-10-30"
+  author: "Blaze Steel · Code Generation Architecture by GPT-5 Thinking"
+  linked_schemas:
+    - prd-rocket-tools
+    - trd-rocket-tools
+    - ard-rocket-tools
+    - vdd-rocket-tools
+  purpose: >
+    Authoritative instructions for the Code Generation Framework (CGF-Orchestrator).
+    This schema defines every command, folder, file, and documentation block required
+    to create, build, and deploy the Rocket Tools website automatically.
+  principles:
+    - "Latest TailwindCSS CLI (≥ 4.1) — no tailwind.config.js or postcss.config.js."
+    - "Deterministic generation: same YAML inputs → identical output."
+    - "Every file must contain AI-readable BEGIN/END markers."
+    - "Readable first, minified only at build time."
+
+# ──────────────────────────────────────────────────────────────────────────────
+# REPOSITORY SCAFFOLDING
+# ──────────────────────────────────────────────────────────────────────────────
+repo_structure:
+  create_directories:
+    - /site/
+    - /site/content/
+    - /site/layouts/_default/
+    - /site/layouts/partials/
+    - /site/assets/css/
+    - /site/data/
+    - /site/netlify/functions/
+    - /docs/
+    - /.github/workflows/
+  static_files:
+    - /site/content/_index.md
+    - /README.md
+    - /docs/changelog.md
+    - /docs/build-manifest.yaml
+  notes:
+    - "All generated files contain YAML front-matter or comment headers."
+    - "The orchestrator must preserve indentation and UTF-8 integrity."
+
+# ──────────────────────────────────────────────────────────────────────────────
+# INPUT & BUILD ASSETS
+# ──────────────────────────────────────────────────────────────────────────────
+build_assets:
+  css:
+    input:  "/site/assets/css/input.css"
+    output: "/site/assets/css/output.css"
+    rule: |
+      npx tailwindcss -i ./assets/css/input.css -o ./assets/css/output.css --minify
+    version_requirement: ">=4.1"
+    validation: "Fail if tailwind.config.* or postcss.config.* exist."
+  hugo:
+    build_command: "hugo --minify --gc --source site"
+    output_dir: "/site/public/"
+  daisyui:
+    include_via: "Tailwind plugin auto-import; no manual config."
+  scripts:
+    alpine: "https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    htmx: "https://unpkg.com/htmx.org@1.9.10"
+  environment_variables:
+    required: ["OPENAI_API_KEY","NETLIFY_AUTH_TOKEN","SITE_BASE_URL"]
+
+# ──────────────────────────────────────────────────────────────────────────────
+# FILE GENERATION RULES
+# ──────────────────────────────────────────────────────────────────────────────
+generate_files:
+  - path: "/site/layouts/_default/baseof.html"
+    purpose: "Root template; includes header, sidebar, footer, scripts."
+    content_template: |
+      <!-- 🔸 BEGIN BASE TEMPLATE -->
+      <!doctype html>
+      <html lang="en" data-theme="rocket">
+        <head>
+          {{ partial "head.html" . }}
+          <link href="/assets/css/output.css" rel="stylesheet">
+        </head>
+        <body class="min-h-screen bg-base-0 text-soft">
+          {{ partial "header.html" . }}
+          <div class="flex">
+            {{ partial "sidebar.html" . }}
+            <main class="flex-1 p-6">
+              {{ block "main" . }}{{ end }}
+            </main>
+          </div>
+          {{ partial "footer.html" . }}
+          <script defer src="{{ .Site.BaseURL }}assets/js/alpine.js"></script>
+          <script src="{{ .Site.BaseURL }}assets/js/htmx.js"></script>
+        </body>
+      </html>
+      <!-- 🔸 END BASE TEMPLATE -->
+  - path: "/site/layouts/partials/header.html"
+    description: "Logo, nav links, social icons with Alpine micro-motion."
+  - path: "/site/layouts/partials/sidebar.html"
+    description: "Data-driven accordion navigation."
+  - path: "/site/layouts/partials/tool-metadata.html"
+    description: "Displays tool metadata, examples, and tags."
+  - path: "/site/layouts/partials/run-tool.html"
+    description: "Input form, Run Tool button (HTMX), streamed output container."
+  - path: "/site/layouts/partials/footer.html"
+    description: "Three-column footer with legal line and soft gradient."
+
+documentation_markers:
+  html: ["<!-- 🔸 BEGIN","<!-- 🔸 END"]
+  css:  ["/* 🔸 BEGIN","/* 🔸 END"]
+  js:   ["// 🔸 BEGIN","// 🔸 END"]
+  yaml: ["# 🔸 BEGIN","# 🔸 END"]
+
+# ──────────────────────────────────────────────────────────────────────────────
+# SERVERLESS FUNCTION GENERATION
+# ──────────────────────────────────────────────────────────────────────────────
+functions:
+  directory: "/site/netlify/functions/"
+  template_fn:
+    name: "fn-run-tool.js"
+    include_doc_blocks: true
+    skeleton: |
+      // 🔸 BEGIN SERVERLESS FUNCTION: fn-run-tool.js
+      // Purpose: Receive POST from HTMX, call OpenAI, stream response.
+      // Sections: CONFIG • HANDLER • CALL OPENAI • STREAM
+      const MODEL = "gpt-4-turbo";
+      const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+
+      export async function handler(event) {
+        try {
+          const body = JSON.parse(event.body || "{}");
+          const { system_prompt, user_prompt, user_input } = body;
+
+          const response = await fetch("https://api.openai.com/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              "Authorization": `Bearer ${OPENAI_API_KEY}`,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              model: MODEL,
+              stream: true,
+              messages: [
+                { role: "system", content: system_prompt },
+                { role: "user", content: user_prompt.replace("{{input}}", user_input) }
+              ]
+            })
+          });
+
+          return {
+            statusCode: 200,
+            headers: { "Content-Type": "text/html" },
+            body: "<pre>Streaming output will appear here…</pre>"
+          };
+        } catch (error) {
+          return {
+            statusCode: 500,
+            body: `<div class='alert alert-error'>Server error: ${error.message}</div>`
+          };
+        }
+      }
+      // 🔸 END SERVERLESS FUNCTION
+  validation:
+    - "Check OPENAI_API_KEY present."
+    - "Ensure response schema {statusCode:int, body:string}."
+
+# ──────────────────────────────────────────────────────────────────────────────
+# AUTOMATION SEQUENCE
+# ──────────────────────────────────────────────────────────────────────────────
+automation_pipeline:
+  install_dependencies:
+    - "npm install --global tailwindcss@latest hugo-cli netlify-cli"
+  build_sequence:
+    - "cd site"
+    - "npx tailwindcss -i ./assets/css/input.css -o ./assets/css/output.css --minify"
+    - "hugo --minify --gc --source site"
+  deploy_sequence:
+    - "netlify deploy --prod"
+  safety_guards:
+    - "Fail if tailwind.config.js or postcss.config.js exist."
+    - "Fail if BEGIN/END markers missing."
+    - "Verify all directories exist before build."
+  ai_precision_notes:
+    - "Each command executed sequentially; zero concurrency for deterministic output."
+    - "Any missing file triggers rebuild from schema."
+
+# ──────────────────────────────────────────────────────────────────────────────
+# CI/CD WORKFLOW
+# ──────────────────────────────────────────────────────────────────────────────
+ci_cd:
+  provider: "GitHub Actions → Netlify"
+  workflow_file: "/.github/workflows/deploy.yml"
+  content: |
+    # 🔸 BEGIN WORKFLOW: deploy.yml
+    name: Deploy Rocket Tools
+    on:
+      push:
+        branches: [ "main" ]
+    jobs:
+      build:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v4
+          - name: Install dependencies
+            run: npm install --global tailwindcss@latest hugo-cli netlify-cli
+          - name: Build Tailwind
+            run: npx tailwindcss -i ./site/assets/css/input.css -o ./site/assets/css/output.css --minify
+          - name: Build Hugo site
+            run: hugo --minify --gc --source site
+          - name: Deploy to Netlify
+            env:
+              NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+            run: netlify deploy --prod
+          - name: Append build metadata
+            run: |
+              echo "$(date -u) — build complete" >> docs/changelog.md
+    # 🔸 END WORKFLOW
+
+# ──────────────────────────────────────────────────────────────────────────────
+# POST-BUILD DOCUMENTATION
+# ──────────────────────────────────────────────────────────────────────────────
+documentation:
+  generate:
+    - "/docs/changelog.md"
+    - "/docs/build-manifest.yaml"
+    - "/docs/deployment-report.md"
+  changelog_append:
+    template: |
+      ## Build {{ date }}
+      - Commit: {{ commit }}
+      - Deployed: {{ site_url }}
+      - Tailwind: latest
+      - Hugo: stable
+  manifest_schema:
+    fields: ["version","commit","build_time","deployment_url","success"]
+  ai_notes:
+    - "Write human-readable summaries in changelog."
+    - "Write machine-readable YAML in build-manifest."
+
+# ──────────────────────────────────────────────────────────────────────────────
+# VALIDATION & QUALITY GATES
+# ──────────────────────────────────────────────────────────────────────────────
+validation:
+  - "Ensure Tailwind CLI version ≥ 4.1 (npx tailwindcss --version)."
+  - "Hugo build returns exit code 0."
+  - "All partials contain proper BEGIN/END markers."
+  - "output.css generated and < 250 KB."
+  - "Edge TTFB ≤ 50 ms (Netlify analytics)."
+  - "Accessibility audit ≥ AA (axe-core or Lighthouse)."
+  - "AI comment markers preserved in all generated artifacts."
+  - "No untracked files remain after build."
+
+# ──────────────────────────────────────────────────────────────────────────────
+# ADVANCED ORCHESTRATION OPTIONS
+# ──────────────────────────────────────────────────────────────────────────────
+advanced:
+  incremental_builds:
+    description: "Only rebuild changed /content/tools/* pages."
+    toggle: false
+  multi_repo_support:
+    description: "Allow federation with Rocket Coalition projects."
+    toggle: false
+  ai_commit_summary:
+    enabled: true
+    pattern: "AI: regenerated {{ file }} — reason: {{ trigger }}"
+
+# ──────────────────────────────────────────────────────────────────────────────
+# COMPLETION CRITERIA
+# ──────────────────────────────────────────────────────────────────────────────
+completion:
+  success_if:
+    - "Site builds and deploys successfully to Netlify (HTTP 200)."
+    - "All docs updated and versioned."
+    - "No tailwind.config.js or postcss.config.js files exist."
+    - "Changelog appended with timestamp and commit SHA."
+  motto: "Build light. Build true. Build Rocket."
