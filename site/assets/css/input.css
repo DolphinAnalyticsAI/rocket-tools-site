@@ -1,4 +1,5 @@
 /* 🔸 BEGIN CSS: input.css */
+/* Tailwind v4 - Import core styles and configure source scanning for utility class generation */
 @import "tailwindcss";
 @source "../layouts/**/*.html";
 @source "../content/**/*.md";
