@@ -1,123 +1,33 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Tools on Rocket Tools</title>
-    <link>http://localhost:1313/tools/</link>
-    <description>Recent content in Tools on Rocket Tools</description>
-    <generator>Hugo</generator>
-    <language>en-us</language>
-    <atom:link href="http://localhost:1313/tools/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Archetype Switchboard</title>
-      <link>http://localhost:1313/tools/archetype-switchboard/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tools/archetype-switchboard/</guid>
-      <description>&lt;!-- 🔸 BEGIN TOOL CONTENT: archetype-switchboard --&gt;&#xD;&#xA;&lt;p&gt;Archetype Switchboard lets you remix voice while preserving objective.&lt;/p&gt;&#xA;&lt;!-- 🔸 END TOOL CONTENT: archetype-switchboard --&gt;</description>
-    </item>
-    <item>
-      <title>Cadence Designer</title>
-      <link>http://localhost:1313/tools/cadence-designer/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tools/cadence-designer/</guid>
-      <description>&lt;!-- 🔸 BEGIN TOOL CONTENT: cadence-designer --&gt;&#xD;&#xA;&lt;p&gt;Cadence Designer builds intentional prompt runbooks instead of one-off prompts.&lt;/p&gt;&#xA;&lt;!-- 🔸 END TOOL CONTENT: cadence-designer --&gt;</description>
-    </item>
-    <item>
-      <title>Empathy Dossier</title>
-      <link>http://localhost:1313/tools/empathy-dossier/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tools/empathy-dossier/</guid>
-      <description>&lt;!-- 🔸 BEGIN TOOL CONTENT: empathy-dossier --&gt;&#xD;&#xA;&lt;p&gt;Empathy Dossier reminds teams who they are designing AI experiences for.&lt;/p&gt;&#xA;&lt;!-- 🔸 END TOOL CONTENT: empathy-dossier --&gt;</description>
-    </item>
-    <item>
-      <title>Feedback Mirror</title>
-      <link>http://localhost:1313/tools/feedback-mirror/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tools/feedback-mirror/</guid>
-      <description>&lt;!-- 🔸 BEGIN TOOL CONTENT: feedback-mirror --&gt;&#xD;&#xA;&lt;p&gt;Feedback Mirror bridges users and models through empathetic adjustments.&lt;/p&gt;&#xA;&lt;!-- 🔸 END TOOL CONTENT: feedback-mirror --&gt;</description>
-    </item>
-    <item>
-      <title>Guardrail Drafter</title>
-      <link>http://localhost:1313/tools/guardrail-drafter/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tools/guardrail-drafter/</guid>
-      <description>&lt;!-- 🔸 BEGIN TOOL CONTENT: guardrail-drafter --&gt;&#xD;&#xA;&lt;p&gt;Guardrail Drafter keeps launches safe without dulling the work.&lt;/p&gt;&#xA;&lt;!-- 🔸 END TOOL CONTENT: guardrail-drafter --&gt;</description>
-    </item>
-    <item>
-      <title>Horizon Brief</title>
-      <link>http://localhost:1313/tools/horizon-brief/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tools/horizon-brief/</guid>
-      <description>&lt;!-- 🔸 BEGIN TOOL CONTENT: horizon-brief --&gt;&#xD;&#xA;&lt;p&gt;Feed fuzzy goals into the Horizon Brief to produce direction your team can trust.&lt;/p&gt;&#xA;&lt;!-- 🔸 END TOOL CONTENT: horizon-brief --&gt;</description>
-    </item>
-    <item>
-      <title>Motive Map</title>
-      <link>http://localhost:1313/tools/motive-map/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tools/motive-map/</guid>
-      <description>&lt;!-- 🔸 BEGIN TOOL CONTENT: motive-map --&gt;&#xD;&#xA;&lt;p&gt;Use the Motive Map to align prompt voice with human intent before you generate anything tactical.&lt;/p&gt;&#xA;&lt;!-- 🔸 END TOOL CONTENT: motive-map --&gt;</description>
-    </item>
-    <item>
-      <title>Output Polisher</title>
-      <link>http://localhost:1313/tools/output-polisher/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tools/output-polisher/</guid>
-      <description>&lt;!-- 🔸 BEGIN TOOL CONTENT: output-polisher --&gt;&#xD;&#xA;&lt;p&gt;Output Polisher gets work over the finish line without sacrificing tone.&lt;/p&gt;&#xA;&lt;!-- 🔸 END TOOL CONTENT: output-polisher --&gt;</description>
-    </item>
-    <item>
-      <title>Pattern Distiller</title>
-      <link>http://localhost:1313/tools/pattern-distiller/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tools/pattern-distiller/</guid>
-      <description>&lt;!-- 🔸 BEGIN TOOL CONTENT: pattern-distiller --&gt;&#xD;&#xA;&lt;p&gt;Pattern Distiller turns raw notes into decision-ready themes.&lt;/p&gt;&#xA;&lt;!-- 🔸 END TOOL CONTENT: pattern-distiller --&gt;</description>
-    </item>
-    <item>
-      <title>Prompt Linter</title>
-      <link>http://localhost:1313/tools/prompt-linter/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tools/prompt-linter/</guid>
-      <description>&lt;!-- 🔸 BEGIN TOOL CONTENT: prompt-linter --&gt;&#xD;&#xA;&lt;p&gt;Prompt Linter keeps your instructions legible to both humans and models.&lt;/p&gt;&#xA;&lt;!-- 🔸 END TOOL CONTENT: prompt-linter --&gt;</description>
-    </item>
-    <item>
-      <title>Replay Conductor</title>
-      <link>http://localhost:1313/tools/replay-conductor/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tools/replay-conductor/</guid>
-      <description>&lt;!-- 🔸 BEGIN TOOL CONTENT: replay-conductor --&gt;&#xD;&#xA;&lt;p&gt;Replay Conductor turns isolated wins into teachable narratives.&lt;/p&gt;&#xA;&lt;!-- 🔸 END TOOL CONTENT: replay-conductor --&gt;</description>
-    </item>
-    <item>
-      <title>Scenario Sculptor</title>
-      <link>http://localhost:1313/tools/scenario-sculptor/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tools/scenario-sculptor/</guid>
-      <description>&lt;!-- 🔸 BEGIN TOOL CONTENT: scenario-sculptor --&gt;&#xD;&#xA;&lt;p&gt;Use Scenario Sculptor to rehearse the future before committing resources.&lt;/p&gt;&#xA;&lt;!-- 🔸 END TOOL CONTENT: scenario-sculptor --&gt;</description>
-    </item>
-    <item>
-      <title>Signal Handoff</title>
-      <link>http://localhost:1313/tools/signal-handoff/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tools/signal-handoff/</guid>
-      <description>&lt;!-- 🔸 BEGIN TOOL CONTENT: signal-handoff --&gt;&#xD;&#xA;&lt;p&gt;Signal Handoff keeps AI insights actionable by framing stakes and next moves succinctly.&lt;/p&gt;&#xA;&lt;!-- 🔸 END TOOL CONTENT: signal-handoff --&gt;</description>
-    </item>
-    <item>
-      <title>Signal Stack</title>
-      <link>http://localhost:1313/tools/signal-stack/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tools/signal-stack/</guid>
-      <description>&lt;!-- 🔸 BEGIN TOOL CONTENT: signal-stack --&gt;&#xD;&#xA;&lt;p&gt;Signal Stack helps teams articulate what’s emerging before competitors see it.&lt;/p&gt;&#xA;&lt;!-- 🔸 END TOOL CONTENT: signal-stack --&gt;</description>
-    </item>
-    <item>
-      <title>Telemetry Pulse</title>
-      <link>http://localhost:1313/tools/telemetry-pulse/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tools/telemetry-pulse/</guid>
-      <description>&lt;!-- 🔸 BEGIN TOOL CONTENT: telemetry-pulse --&gt;&#xD;&#xA;&lt;p&gt;Telemetry Pulse helps teams feel the heartbeat of their AI tools.&lt;/p&gt;&#xA;&lt;!-- 🔸 END TOOL CONTENT: telemetry-pulse --&gt;</description>
-    </item>
-    <item>
-      <title>Tension Hunter</title>
-      <link>http://localhost:1313/tools/tension-hunter/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/tools/tension-hunter/</guid>
-      <description>&lt;!-- 🔸 BEGIN TOOL CONTENT: tension-hunter --&gt;&#xD;&#xA;&lt;p&gt;Tension Hunter surfaces paradoxes your prompts must respect.&lt;/p&gt;&#xA;&lt;!-- 🔸 END TOOL CONTENT: tension-hunter --&gt;</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Tools on Rocket Tools</title><link>https://example.com/tools/</link><description>Recent content in Tools on Rocket Tools</description><generator>Hugo</generator><language>en-us</language><atom:link href="https://example.com/tools/index.xml" rel="self" type="application/rss+xml"/><item><title>Archetype Switchboard</title><link>https://example.com/tools/archetype-switchboard/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://example.com/tools/archetype-switchboard/</guid><description>&lt;!-- 🔸 BEGIN TOOL CONTENT: archetype-switchboard -->
+&lt;p>Archetype Switchboard lets you remix voice while preserving objective.&lt;/p>
+&lt;!-- 🔸 END TOOL CONTENT: archetype-switchboard --></description></item><item><title>Cadence Designer</title><link>https://example.com/tools/cadence-designer/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://example.com/tools/cadence-designer/</guid><description>&lt;!-- 🔸 BEGIN TOOL CONTENT: cadence-designer -->
+&lt;p>Cadence Designer builds intentional prompt runbooks instead of one-off prompts.&lt;/p>
+&lt;!-- 🔸 END TOOL CONTENT: cadence-designer --></description></item><item><title>Empathy Dossier</title><link>https://example.com/tools/empathy-dossier/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://example.com/tools/empathy-dossier/</guid><description>&lt;!-- 🔸 BEGIN TOOL CONTENT: empathy-dossier -->
+&lt;p>Empathy Dossier reminds teams who they are designing AI experiences for.&lt;/p>
+&lt;!-- 🔸 END TOOL CONTENT: empathy-dossier --></description></item><item><title>Feedback Mirror</title><link>https://example.com/tools/feedback-mirror/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://example.com/tools/feedback-mirror/</guid><description>&lt;!-- 🔸 BEGIN TOOL CONTENT: feedback-mirror -->
+&lt;p>Feedback Mirror bridges users and models through empathetic adjustments.&lt;/p>
+&lt;!-- 🔸 END TOOL CONTENT: feedback-mirror --></description></item><item><title>Guardrail Drafter</title><link>https://example.com/tools/guardrail-drafter/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://example.com/tools/guardrail-drafter/</guid><description>&lt;!-- 🔸 BEGIN TOOL CONTENT: guardrail-drafter -->
+&lt;p>Guardrail Drafter keeps launches safe without dulling the work.&lt;/p>
+&lt;!-- 🔸 END TOOL CONTENT: guardrail-drafter --></description></item><item><title>Horizon Brief</title><link>https://example.com/tools/horizon-brief/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://example.com/tools/horizon-brief/</guid><description>&lt;!-- 🔸 BEGIN TOOL CONTENT: horizon-brief -->
+&lt;p>Feed fuzzy goals into the Horizon Brief to produce direction your team can trust.&lt;/p>
+&lt;!-- 🔸 END TOOL CONTENT: horizon-brief --></description></item><item><title>Motive Map</title><link>https://example.com/tools/motive-map/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://example.com/tools/motive-map/</guid><description>&lt;!-- 🔸 BEGIN TOOL CONTENT: motive-map -->
+&lt;p>Use the Motive Map to align prompt voice with human intent before you generate anything tactical.&lt;/p>
+&lt;!-- 🔸 END TOOL CONTENT: motive-map --></description></item><item><title>Output Polisher</title><link>https://example.com/tools/output-polisher/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://example.com/tools/output-polisher/</guid><description>&lt;!-- 🔸 BEGIN TOOL CONTENT: output-polisher -->
+&lt;p>Output Polisher gets work over the finish line without sacrificing tone.&lt;/p>
+&lt;!-- 🔸 END TOOL CONTENT: output-polisher --></description></item><item><title>Pattern Distiller</title><link>https://example.com/tools/pattern-distiller/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://example.com/tools/pattern-distiller/</guid><description>&lt;!-- 🔸 BEGIN TOOL CONTENT: pattern-distiller -->
+&lt;p>Pattern Distiller turns raw notes into decision-ready themes.&lt;/p>
+&lt;!-- 🔸 END TOOL CONTENT: pattern-distiller --></description></item><item><title>Prompt Linter</title><link>https://example.com/tools/prompt-linter/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://example.com/tools/prompt-linter/</guid><description>&lt;!-- 🔸 BEGIN TOOL CONTENT: prompt-linter -->
+&lt;p>Prompt Linter keeps your instructions legible to both humans and models.&lt;/p>
+&lt;!-- 🔸 END TOOL CONTENT: prompt-linter --></description></item><item><title>Replay Conductor</title><link>https://example.com/tools/replay-conductor/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://example.com/tools/replay-conductor/</guid><description>&lt;!-- 🔸 BEGIN TOOL CONTENT: replay-conductor -->
+&lt;p>Replay Conductor turns isolated wins into teachable narratives.&lt;/p>
+&lt;!-- 🔸 END TOOL CONTENT: replay-conductor --></description></item><item><title>Scenario Sculptor</title><link>https://example.com/tools/scenario-sculptor/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://example.com/tools/scenario-sculptor/</guid><description>&lt;!-- 🔸 BEGIN TOOL CONTENT: scenario-sculptor -->
+&lt;p>Use Scenario Sculptor to rehearse the future before committing resources.&lt;/p>
+&lt;!-- 🔸 END TOOL CONTENT: scenario-sculptor --></description></item><item><title>Signal Handoff</title><link>https://example.com/tools/signal-handoff/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://example.com/tools/signal-handoff/</guid><description>&lt;!-- 🔸 BEGIN TOOL CONTENT: signal-handoff -->
+&lt;p>Signal Handoff keeps AI insights actionable by framing stakes and next moves succinctly.&lt;/p>
+&lt;!-- 🔸 END TOOL CONTENT: signal-handoff --></description></item><item><title>Signal Stack</title><link>https://example.com/tools/signal-stack/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://example.com/tools/signal-stack/</guid><description>&lt;!-- 🔸 BEGIN TOOL CONTENT: signal-stack -->
+&lt;p>Signal Stack helps teams articulate what’s emerging before competitors see it.&lt;/p>
+&lt;!-- 🔸 END TOOL CONTENT: signal-stack --></description></item><item><title>Telemetry Pulse</title><link>https://example.com/tools/telemetry-pulse/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://example.com/tools/telemetry-pulse/</guid><description>&lt;!-- 🔸 BEGIN TOOL CONTENT: telemetry-pulse -->
+&lt;p>Telemetry Pulse helps teams feel the heartbeat of their AI tools.&lt;/p>
+&lt;!-- 🔸 END TOOL CONTENT: telemetry-pulse --></description></item><item><title>Tension Hunter</title><link>https://example.com/tools/tension-hunter/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://example.com/tools/tension-hunter/</guid><description>&lt;!-- 🔸 BEGIN TOOL CONTENT: tension-hunter -->
+&lt;p>Tension Hunter surfaces paradoxes your prompts must respect.&lt;/p>
+&lt;!-- 🔸 END TOOL CONTENT: tension-hunter --></description></item></channel></rss>

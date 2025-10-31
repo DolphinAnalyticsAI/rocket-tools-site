@@ -1,7 +1,7 @@
 /* 🔸 BEGIN CSS: input.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@source "../layouts/**/*.html";
+@source "../content/**/*.md";
 
 /* 🔸 BEGIN THEME TOKENS */
 :root {
