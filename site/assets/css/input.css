@@ -1,7 +1,8 @@
 /* 🔸 BEGIN CSS: input.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Tailwind v4 - Import core styles and configure source scanning for utility class generation */
+@import "tailwindcss";
+@source "../layouts/**/*.html";
+@source "../content/**/*.md";
 
 /* 🔸 BEGIN THEME TOKENS */
 :root {

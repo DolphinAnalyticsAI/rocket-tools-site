@@ -1,0 +1,18 @@
+# Hugo build artifacts
+site/public/
+site/.hugo_build.lock
+
+# Dependencies and build tools
+hugo_extended_*.tar.gz
+*.tar.gz
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
